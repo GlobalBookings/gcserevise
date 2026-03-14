@@ -261,18 +261,55 @@
 
 ---
 
+---
+
+## Session 2: Content, SEO & Data Wiring (13 March 2026, continued)
+
+### Content Strategy Decision
+- **Cannot scrape/republish BBC Bitesize** -- copyrighted content
+- **Cannot use AI-generated revision notes as authoritative** -- risk of inaccuracies
+- **Approach chosen:** Link to BBC Bitesize per topic + original quizzes/flashcards based on curriculum facts + plan for teacher-verified notes
+
+### What Was Done
+1. **003_gamification.sql** -- run successfully in Supabase SQL Editor (user did manually)
+2. **355 quiz questions seeded** -- 5 per topic, all 71 topics, all 6 subjects (scripts/seed-quizzes.ts)
+3. **568 flashcards seeded** -- 8 per topic, all 71 topics, all 6 subjects (scripts/seed-flashcards.ts)
+4. **Topic pages wired to Supabase** -- now pull real notes, flashcard counts, quiz counts from database
+5. **BBC Bitesize links added** -- direct links to verified AQA revision content per topic:
+   - All 14 Biology topics mapped to Bitesize guides
+   - All 10 Chemistry topics mapped (some with 3-4 guides each)
+   - All 8 Physics topics mapped
+   - Key Maths topics mapped
+   - All 7 English Literature topics mapped
+   - File: src/data/bitesize-links.ts
+
+### Database Content Status (Updated)
+| Table | Rows | Status |
+|-------|------|--------|
+| exam_boards | 5 | Done |
+| subjects | 6 | Done (AQA only) |
+| topics | 71 | Done (AQA only) |
+| revision_notes | 0 | EMPTY -- needs teacher-verified content |
+| quiz_questions | 355 | Done (5 per topic, AI-generated -- should be teacher-reviewed) |
+| flashcards | 568 | Done (8 per topic, AI-generated -- should be teacher-reviewed) |
+| past_papers | 0 | Empty (links to be added) |
+| user_xp_log | 0 | Table exists (gamification migration run) |
+| user_badge_events | 0 | Table exists (gamification migration run) |
+
 ### Outstanding / Next Steps
-- [ ] **Run 003_gamification.sql** in Supabase SQL Editor
-- [ ] **Seed revision notes** for all 71 topics (revision_notes table is empty)
-- [ ] **Seed quiz questions** for all 71 topics (quiz_questions table is empty)
-- [ ] **Wire topic pages** to pull real content from Supabase (currently hardcoded placeholder)
-- [ ] **Wire quiz/flashcard pages** to pull from Supabase per topic
-- [ ] **Add Google Search Console** verification meta tag
-- [ ] **Add Bing Webmaster** verification meta tag
-- [ ] **Submit sitemap** to Google Search Console and Bing
-- [ ] **Connect gcserevise.co.uk** domain (DNS CNAME to gcserevise-94yh6.ondigitalocean.app)
+- [x] ~~Run 003_gamification.sql in Supabase SQL Editor~~
+- [x] ~~Seed quiz questions for all 71 topics~~
+- [x] ~~Seed flashcards for all 71 topics~~
+- [x] ~~Wire topic pages to pull real content from Supabase~~
+- [x] ~~Connect gcserevise.co.uk domain (DNS done by user)~~
+- [ ] **Get quiz/flashcard content teacher-reviewed** for accuracy
+- [ ] **Write/commission revision notes** (teacher-authored or spec-based summaries)
+- [ ] **Wire quiz page** to pull questions per topic from Supabase (currently hardcoded sample)
+- [ ] **Wire flashcard page** to pull cards per topic from Supabase (currently hardcoded sample)
+- [ ] **Submit sitemap** to Google Search Console (https://gcserevise.co.uk/sitemap.xml)
+- [ ] **Submit sitemap** to Bing Webmaster Tools
 - [ ] Add Edexcel + OCR board topic data
 - [ ] Add more subjects (History, Geography, Computer Science, etc.)
 - [ ] School partnerships outreach
 - [ ] TikTok/social content pipeline
-- [ ] Rotate Supabase service role key (was shared in chat)
+- [ ] **IMPORTANT: Rotate Supabase service role key** (was shared in chat session)
