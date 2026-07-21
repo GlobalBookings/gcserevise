@@ -3,8 +3,13 @@ import { ArrowRight, CheckCircle2, GraduationCap, PenLine, Timer, Trophy } from 
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { PastPaperTracker } from "@/components/study/past-paper-tracker";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = { title: "AQA GCSE Past Papers & Mark Schemes", description: "Official AQA GCSE papers and mark schemes for Maths, Biology, Chemistry, Physics, Geography and History, plus a simple practice tracker." };
+export const metadata: Metadata = createPageMetadata({
+  title: "AQA GCSE Past Papers & Mark Schemes",
+  description: "Find official AQA GCSE past papers and mark schemes for Maths, Biology, Chemistry, Physics, Geography and History, with a simple practice tracker.",
+  path: "/past-papers",
+});
 
 const subjects = [
   { name: "Maths", slug: "maths", description: "Foundation and Higher papers 1, 2 and 3, with official mark schemes.", url: "https://www.aqa.org.uk/subjects/mathematics/gcse/mathematics-8300/assessment-resources" },

@@ -3,11 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { BookOpen, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/client";
+import { BrandLogo } from "@/components/brand/brand-logo";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -50,11 +51,8 @@ export default function SignupPage() {
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-4 dark:bg-zinc-950">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <Link href="/" className="inline-flex items-center gap-2">
-            <BookOpen className="h-8 w-8 text-indigo-600" />
-            <span className="text-2xl font-bold">
-              GCSE<span className="text-indigo-600">Revise</span>
-            </span>
+          <Link href="/" aria-label="GCSERevise home" className="inline-flex rounded-xl">
+            <BrandLogo />
           </Link>
         </div>
 

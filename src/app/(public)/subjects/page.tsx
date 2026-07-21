@@ -4,11 +4,13 @@ import { ArrowRight, Atom, Dna, FlaskConical, History, LandPlot, Sigma } from "l
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { getPublishedSubjects } from "@/data/revision-library";
+import { createPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = createPageMetadata({
   title: "GCSE Revision Subjects",
-  description: "Revise AQA GCSE Maths, Biology, Chemistry, Physics, Geography and History with notes, quizzes, flashcards and topic tutoring.",
-};
+  description: "Revise AQA GCSE Maths, Biology, Chemistry, Physics, Geography and History with topic notes, quizzes, flashcards and guided tutoring.",
+  path: "/subjects",
+});
 
 const presentation = {
   maths: { icon: Sigma, tone: "subject-blue", line: "Methods, worked knowledge and exam-style recall" },

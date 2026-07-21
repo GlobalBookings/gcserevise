@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { WebsiteJsonLd, OrganizationJsonLd } from "@/components/seo/json-ld";
+import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, SOCIAL_IMAGE } from "@/lib/seo";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,39 +15,35 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "GCSERevise - Notes, Quizzes, Flashcards & AI Tutor",
+    default: "Free GCSE Revision: Notes, Quizzes & Flashcards | GCSERevise",
     template: "%s | GCSERevise",
   },
-  description:
-    "GCSE revision notes, quizzes, flashcards, past papers and an AI tutor for Maths, Biology, Chemistry, Physics, Geography and History.",
-  keywords: [
-    "GCSE revision",
-    "GCSE notes",
-    "AQA GCSE",
-    "Edexcel GCSE",
-    "OCR GCSE",
-    "GCSE past papers",
-    "GCSE AI tutor",
-    "GCSE planner",
-  ],
+  description: DEFAULT_DESCRIPTION,
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: "education",
+  referrer: "origin-when-cross-origin",
   openGraph: {
-    title: "GCSERevise - Smarter GCSE Revision",
-    description:
-      "Notes, quizzes, flashcards, past papers and an AI tutor, organised around your GCSE topics.",
-    url: "https://gcserevise.co.uk",
-    siteName: "GCSERevise",
+    title: "Free GCSE Revision: Notes, Quizzes & Flashcards",
+    description: DEFAULT_DESCRIPTION,
+    url: "/",
+    siteName: SITE_NAME,
     type: "website",
     locale: "en_GB",
+    images: [SOCIAL_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
-    title: "GCSERevise - Smarter GCSE Revision",
-    description: "Notes, quizzes, flashcards, past papers and an AI tutor for six core GCSE subjects.",
+    title: "Free GCSE Revision: Notes, Quizzes & Flashcards",
+    description: DEFAULT_DESCRIPTION,
+    images: [SOCIAL_IMAGE.url],
   },
-  metadataBase: new URL("https://gcserevise.co.uk"),
   alternates: {
-    canonical: "https://gcserevise.co.uk",
+    canonical: "/",
   },
   robots: {
     index: true,
@@ -59,6 +56,11 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+};
+
+export const viewport: Viewport = {
+  colorScheme: "light",
+  themeColor: "#0f172a",
 };
 
 export default function RootLayout({

@@ -8,12 +8,12 @@ import {
   BarChart3,
   Settings,
   LogOut,
-  GraduationCap,
   Flame,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { BrandLogo } from "@/components/brand/brand-logo";
 
 const sidebarLinks = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -34,11 +34,10 @@ export function DashboardSidebar() {
 
   return (
     <aside className="flex h-screen w-64 flex-col border-r border-zinc-200 bg-white dark:border-zinc-800 dark:bg-zinc-950">
-      <div className="flex h-16 items-center gap-2 border-b border-zinc-200 px-6 dark:border-zinc-800">
-        <GraduationCap className="h-6 w-6 text-indigo-600" />
-        <span className="text-lg font-bold">
-          GCSE<span className="text-indigo-600">Revise</span>
-        </span>
+      <div className="flex h-16 items-center border-b border-zinc-200 px-5 dark:border-zinc-800">
+        <Link href="/" aria-label="GCSERevise home">
+          <BrandLogo compact />
+        </Link>
       </div>
 
       <nav className="flex-1 space-y-1 px-3 py-4">

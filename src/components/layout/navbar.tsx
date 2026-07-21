@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpenCheck, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BrandLogo } from "@/components/brand/brand-logo";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
@@ -21,11 +22,8 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/90 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-sm shadow-indigo-200"><BookOpenCheck className="h-5 w-5" /></span>
-          <span className="text-lg font-black tracking-tight text-slate-950">
-            GCSE<span className="text-indigo-600">Revise</span>
-          </span>
+        <Link href="/" aria-label="GCSERevise home" className="rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2">
+          <BrandLogo />
         </Link>
 
         {/* Desktop nav */}

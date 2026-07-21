@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { TopicStudyWorkspace } from "@/components/study/topic-study-workspace";
-import { BreadcrumbJsonLd, CourseJsonLd } from "@/components/seo/json-ld";
+import { BreadcrumbJsonLd, LearningResourceJsonLd } from "@/components/seo/json-ld";
 import {
   getAdjacentTopics,
   getPublishedSubjects,
@@ -11,6 +11,7 @@ import {
   getTopic,
   OFFICIAL_SPEC_URLS,
 } from "@/data/revision-library";
+import { createPageMetadata } from "@/lib/seo";
 
 type PageProps = { params: Promise<{ board: string; subject: string; topic: string }> };
 
@@ -24,11 +25,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { board, subject, topic } = await params;
   const result = getTopic(subject, topic);
   if (!result) return {};
-  return {
+  return createPageMetadata({
     title: `${result.topic.name} - ${board.toUpperCase()} GCSE ${result.subject.name} Revision`,
     description: `Revise ${result.topic.name} with clear notes, an auto-marked quiz, flashcards and a topic tutor for ${board.toUpperCase()} GCSE ${result.subject.name}.`,
-    alternates: { canonical: `https://gcserevise.co.uk/subjects/${board}/${subject}/${topic}` },
-  };
+    path: `/subjects/${board}/${subject}/${topic}`,
+  });
 }
 
 export default async function TopicPage({ params }: PageProps) {
@@ -52,7 +53,7 @@ export default async function TopicPage({ params }: PageProps) {
         { name: subject.name, url: `${baseUrl}/subjects/aqa/${subjectSlug}` },
         { name: topic.name, url: pageUrl },
       ]} />
-      <CourseJsonLd name={`AQA GCSE ${subject.name}: ${topic.name}`} description={content.summary} provider="GCSERevise" url={pageUrl} />
+      <LearningResourceJsonLd name={`AQA GCSE ${subject.name}: ${topic.name}`} description={content.summary} provider="GCSERevise" url={pageUrl} />
       <TopicStudyWorkspace
         board={board}
         subjectName={subject.name}

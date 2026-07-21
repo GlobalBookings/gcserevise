@@ -2,14 +2,12 @@ export function WebsiteJsonLd() {
   const data = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": "https://gcserevise.co.uk/#website",
     name: "GCSERevise",
     url: "https://gcserevise.co.uk",
     description: "Free AQA GCSE revision notes, quizzes, flashcards, guided topic tutoring and progress tracking for six high-demand subjects.",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: "https://gcserevise.co.uk/subjects?q={search_term_string}",
-      "query-input": "required name=search_term_string",
-    },
+    inLanguage: "en-GB",
+    publisher: { "@id": "https://gcserevise.co.uk/#organization" },
   };
 
   return (
@@ -24,9 +22,16 @@ export function OrganizationJsonLd() {
   const data = {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
+    "@id": "https://gcserevise.co.uk/#organization",
     name: "GCSERevise",
     url: "https://gcserevise.co.uk",
     description: "Free AQA GCSE topic revision for UK students",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://gcserevise.co.uk/icon.png",
+      width: 512,
+      height: 512,
+    },
     areaServed: {
       "@type": "Country",
       name: "United Kingdom",
@@ -61,7 +66,7 @@ export function BreadcrumbJsonLd({ items }: { items: { name: string; url: string
   );
 }
 
-export function CourseJsonLd({
+export function LearningResourceJsonLd({
   name,
   description,
   provider,
@@ -74,17 +79,22 @@ export function CourseJsonLd({
 }) {
   const data = {
     "@context": "https://schema.org",
-    "@type": "Course",
+    "@type": "LearningResource",
     name,
     description,
     provider: {
-      "@type": "Organization",
+      "@type": "EducationalOrganization",
+      "@id": "https://gcserevise.co.uk/#organization",
       name: provider,
-      url: "https://gcserevise.co.uk",
     },
     url,
     isAccessibleForFree: true,
     educationalLevel: "GCSE",
+    learningResourceType: ["Revision notes", "Quiz", "Flashcards"],
+    audience: {
+      "@type": "EducationalAudience",
+      educationalRole: "student",
+    },
     inLanguage: "en-GB",
   };
 

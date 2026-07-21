@@ -5,8 +5,9 @@ import { ArrowLeft, ExternalLink, Sparkles } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { SubjectTopicList } from "@/components/study/subject-topic-list";
-import { BreadcrumbJsonLd, CourseJsonLd } from "@/components/seo/json-ld";
+import { BreadcrumbJsonLd, LearningResourceJsonLd } from "@/components/seo/json-ld";
 import { getPublishedSubjects, getSubject, OFFICIAL_SPEC_URLS } from "@/data/revision-library";
+import { createPageMetadata } from "@/lib/seo";
 
 type PageProps = { params: Promise<{ board: string; subject: string }> };
 
@@ -18,11 +19,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { board, subject } = await params;
   const subjectData = getSubject(subject);
   if (!subjectData) return {};
-  return {
+  return createPageMetadata({
     title: `${board.toUpperCase()} GCSE ${subjectData.name} Revision`,
     description: `Complete ${board.toUpperCase()} GCSE ${subjectData.name} revision with notes, quizzes, flashcards and a guided topic tutor. Progress is saved automatically.`,
-    alternates: { canonical: `https://gcserevise.co.uk/subjects/${board}/${subject}` },
-  };
+    path: `/subjects/${board}/${subject}`,
+  });
 }
 
 export default async function SubjectPage({ params }: PageProps) {
@@ -40,7 +41,7 @@ export default async function SubjectPage({ params }: PageProps) {
         { name: "AQA", url: `${baseUrl}/subjects/aqa` },
         { name: subject.name, url: `${baseUrl}/subjects/aqa/${subjectSlug}` },
       ]} />
-      <CourseJsonLd name={`AQA GCSE ${subject.name}`} description={`Complete AQA GCSE ${subject.name} revision with notes, quizzes, flashcards and guided tutoring.`} provider="GCSERevise" url={`${baseUrl}/subjects/aqa/${subjectSlug}`} />
+      <LearningResourceJsonLd name={`AQA GCSE ${subject.name}`} description={`Complete AQA GCSE ${subject.name} revision with notes, quizzes, flashcards and guided tutoring.`} provider="GCSERevise" url={`${baseUrl}/subjects/aqa/${subjectSlug}`} />
 
       <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">

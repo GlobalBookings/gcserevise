@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BookOpenCheck } from "lucide-react";
+import { BrandLogo } from "@/components/brand/brand-logo";
 
 export function Footer() {
   return (
@@ -7,11 +7,8 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-500"><BookOpenCheck className="h-4 w-4" /></span>
-              <span className="font-black">
-                GCSE<span className="text-indigo-400">Revise</span>
-              </span>
+            <Link href="/" aria-label="GCSERevise home" className="inline-flex rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950">
+              <BrandLogo inverted compact />
             </Link>
             <p className="mt-3 max-w-xs text-sm leading-6 text-slate-400">
               A clearer, smarter way to revise Maths, Science, Geography and History.
