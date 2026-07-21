@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { BarChart3, TrendingUp, Target, BookOpen } from "lucide-react";
+import { BarChart3, TrendingUp, Target } from "lucide-react";
 
 const subjects = [
   {

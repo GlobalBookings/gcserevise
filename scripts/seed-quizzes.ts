@@ -4,17 +4,7 @@
 
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = "https://wmncmoauedmlzbfxajtj.supabase.co";
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
-
-if (!supabaseKey) {
-  console.error("Missing SUPABASE_SERVICE_ROLE_KEY environment variable");
-  process.exit(1);
-}
-
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-interface QuizQuestion {
+export interface QuizQuestion {
   question: string;
   options: string[];
   correct_answer: number;
@@ -30,7 +20,7 @@ interface QuizQuestion {
 // correct_answer: 0-based index into options array
 // ============================================
 
-const questionsByTopicSlug: Record<string, QuizQuestion[]> = {
+export const questionsByTopicSlug: Record<string, QuizQuestion[]> = {
 
   // ========== MATHS (24 topics) ==========
 
@@ -3578,6 +3568,12 @@ const questionsByTopicSlug: Record<string, QuizQuestion[]> = {
 // ============================================
 
 async function seedQuizzes() {
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+  if (!supabaseKey) {
+    console.error("Missing SUPABASE_SERVICE_ROLE_KEY environment variable");
+    process.exit(1);
+  }
+  const supabase = createClient("https://wmncmoauedmlzbfxajtj.supabase.co", supabaseKey);
   console.log("🎯 Seeding quiz questions into Supabase...\n");
 
   // 1. Fetch all topics with their subject information
@@ -3615,7 +3611,7 @@ async function seedQuizzes() {
   }> = [];
 
   let matchedTopics = 0;
-  let unmatchedSlugs: string[] = [];
+  const unmatchedSlugs: string[] = [];
 
   for (const [slug, questions] of Object.entries(questionsByTopicSlug)) {
     const topicId = slugToTopicId[slug];
@@ -3679,4 +3675,6 @@ async function seedQuizzes() {
   console.log("========================================");
 }
 
-seedQuizzes().catch(console.error);
+if (process.argv[1]?.endsWith("seed-quizzes.ts")) {
+  seedQuizzes().catch(console.error);
+}

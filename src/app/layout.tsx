@@ -15,11 +15,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "GCSERevise - Free GCSE Revision for All UK Students",
+    default: "GCSERevise - Notes, Quizzes, Flashcards & AI Tutor",
     template: "%s | GCSERevise",
   },
   description:
-    "Free GCSE revision planner, notes, quizzes and flashcards for every exam board and subject. Track your progress and ace your exams.",
+    "GCSE revision notes, quizzes, flashcards, past papers and an AI tutor for Maths, Biology, Chemistry, Physics, Geography and History.",
   keywords: [
     "GCSE revision",
     "GCSE notes",
@@ -27,13 +27,13 @@ export const metadata: Metadata = {
     "Edexcel GCSE",
     "OCR GCSE",
     "GCSE past papers",
-    "free revision",
+    "GCSE AI tutor",
     "GCSE planner",
   ],
   openGraph: {
-    title: "GCSERevise - Free Revision for All UK Students",
+    title: "GCSERevise - Smarter GCSE Revision",
     description:
-      "Free personalised GCSE revision planner with notes, quizzes and progress tracking.",
+      "Notes, quizzes, flashcards, past papers and an AI tutor, organised around your GCSE topics.",
     url: "https://gcserevise.co.uk",
     siteName: "GCSERevise",
     type: "website",
@@ -41,8 +41,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "GCSERevise - Free GCSE Revision for All UK Students",
-    description: "Free personalised GCSE revision planner with notes, quizzes and progress tracking.",
+    title: "GCSERevise - Smarter GCSE Revision",
+    description: "Notes, quizzes, flashcards, past papers and an AI tutor for six core GCSE subjects.",
   },
   metadataBase: new URL("https://gcserevise.co.uk"),
   alternates: {

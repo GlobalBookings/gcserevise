@@ -40,6 +40,57 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+.hero-grid {
+  background-color: #fbfcff;
+  background-image:
+    linear-gradient(rgba(99, 102, 241, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(99, 102, 241, 0.055) 1px, transparent 1px);
+  background-size: 34px 34px;
+  mask-image: linear-gradient(to bottom, black 75%, transparent 100%);
+}
+
+.eyebrow {
+  color: #4f46e5;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.subject-card {
+  border-color: #e2e8f0;
+}
+
+.subject-card .subject-icon {
+  transition: transform 180ms ease;
+}
+
+.subject-card:hover .subject-icon {
+  transform: rotate(-4deg) scale(1.06);
+}
+
+.subject-blue .subject-icon { background: #dbeafe; color: #2563eb; }
+.subject-blue:hover { border-color: #93c5fd; }
+.subject-green .subject-icon { background: #d1fae5; color: #059669; }
+.subject-green:hover { border-color: #6ee7b7; }
+.subject-orange .subject-icon { background: #ffedd5; color: #ea580c; }
+.subject-orange:hover { border-color: #fdba74; }
+.subject-purple .subject-icon { background: #ede9fe; color: #7c3aed; }
+.subject-purple:hover { border-color: #c4b5fd; }
+.subject-teal .subject-icon { background: #ccfbf1; color: #0f766e; }
+.subject-teal:hover { border-color: #5eead4; }
+.subject-rose .subject-icon { background: #ffe4e6; color: #e11d48; }
+.subject-rose:hover { border-color: #fda4af; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

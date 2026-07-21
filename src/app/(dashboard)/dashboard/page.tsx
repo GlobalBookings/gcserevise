@@ -74,7 +74,7 @@ function taskTypeBadge(type: string) {
 export default function DashboardPage() {
   const [tasks, setTasks] = useState<Task[]>(placeholderTasks);
   const [xp, setXp] = useState(320);
-  const [streak, setStreak] = useState(7);
+  const [streak] = useState(7);
   const [displayName, setDisplayName] = useState("Student");
   const [showXPToast, setShowXPToast] = useState(false);
   const [xpGained, setXpGained] = useState(0);

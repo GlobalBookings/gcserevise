@@ -43,7 +43,7 @@ export default function SignupPage() {
       return;
     }
 
-    router.push("/dashboard");
+    router.push("/my-revision");
   }
 
   return (
@@ -120,7 +120,7 @@ export default function SignupPage() {
             </form>
 
             <div className="mt-6 space-y-2">
-              {["No payment required", "All subjects included", "Cancel anytime"].map((item) => (
+              {["No payment required", "Six AQA subjects", "Start revising immediately"].map((item) => (
                 <div key={item} className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
                   <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                   {item}

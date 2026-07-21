@@ -4,7 +4,7 @@ services:
   - name: web
     dockerfile_path: Dockerfile
     github:
-      repo: your-github-username/gcserevise
+      repo: GlobalBookings/gcserevise
       branch: main
       deploy_on_push: true
     http_port: 3000

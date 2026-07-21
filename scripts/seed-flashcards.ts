@@ -3,17 +3,7 @@
 
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = "https://wmncmoauedmlzbfxajtj.supabase.co";
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
-
-if (!supabaseKey) {
-  console.error("Missing SUPABASE_SERVICE_ROLE_KEY environment variable");
-  process.exit(1);
-}
-
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-interface Flashcard {
+export interface Flashcard {
   term: string;
   definition: string;
   hint: string;
@@ -24,7 +14,7 @@ interface Flashcard {
 // All content accurate to UK AQA GCSE curriculum
 // ============================================
 
-const flashcardsByTopicSlug: Record<string, Flashcard[]> = {
+export const flashcardsByTopicSlug: Record<string, Flashcard[]> = {
 
   // ========== MATHS (24 topics) ==========
 
@@ -825,6 +815,12 @@ const flashcardsByTopicSlug: Record<string, Flashcard[]> = {
 // ============================================
 
 async function seedFlashcards() {
+  const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+  if (!supabaseKey) {
+    console.error("Missing SUPABASE_SERVICE_ROLE_KEY environment variable");
+    process.exit(1);
+  }
+  const supabase = createClient("https://wmncmoauedmlzbfxajtj.supabase.co", supabaseKey);
   console.log("🃏 Seeding flashcards into Supabase...\n");
 
   // Step 1: Fetch all topics with their subject info
@@ -855,7 +851,7 @@ async function seedFlashcards() {
   }> = [];
 
   let matchedTopics = 0;
-  let unmatchedTopics: string[] = [];
+  const unmatchedTopics: string[] = [];
 
   for (const topic of topics) {
     const cards = flashcardsByTopicSlug[topic.slug];
@@ -904,4 +900,6 @@ async function seedFlashcards() {
   console.log(`\n✅ Seeding complete! ${totalInserted} flashcards inserted successfully.`);
 }
 
-seedFlashcards().catch(console.error);
+if (process.argv[1]?.endsWith("seed-flashcards.ts")) {
+  seedFlashcards().catch(console.error);
+}

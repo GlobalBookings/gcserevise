@@ -1,141 +1,53 @@
 import Link from "next/link";
+import type { Metadata } from "next";
+import { ArrowRight, Atom, Dna, FlaskConical, History, LandPlot, Sigma } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  Calculator,
-  BookOpen,
-  FlaskConical,
-  Zap,
-  Globe,
-  Monitor,
-  Users,
-  Palette,
-  Music,
-  Dumbbell,
-  Brain,
-  Camera,
-  UtensilsCrossed,
-  Drama,
-} from "lucide-react";
-import type { Metadata } from "next";
+import { getPublishedSubjects } from "@/data/revision-library";
 
 export const metadata: Metadata = {
-  title: "All GCSE Subjects",
-  description: "Browse revision notes, quizzes and flashcards for every GCSE subject across AQA, Edexcel, OCR, WJEC and CCEA exam boards.",
+  title: "GCSE Revision Subjects",
+  description: "Revise AQA GCSE Maths, Biology, Chemistry, Physics, Geography and History with notes, quizzes, flashcards and topic tutoring.",
 };
 
-const subjectGroups = [
-  {
-    category: "Core Subjects",
-    subjects: [
-      { name: "Mathematics", slug: "maths", icon: Calculator, color: "bg-blue-500", boards: ["AQA", "Edexcel", "OCR"], topics: 29 },
-      { name: "English Language", slug: "english-language", icon: BookOpen, color: "bg-purple-500", boards: ["AQA", "Edexcel"], topics: 12 },
-      { name: "English Literature", slug: "english-literature", icon: BookOpen, color: "bg-violet-500", boards: ["AQA", "Edexcel", "OCR"], topics: 15 },
-    ],
-  },
-  {
-    category: "Sciences",
-    subjects: [
-      { name: "Biology", slug: "biology", icon: FlaskConical, color: "bg-emerald-500", boards: ["AQA", "Edexcel", "OCR"], topics: 21 },
-      { name: "Chemistry", slug: "chemistry", icon: FlaskConical, color: "bg-amber-500", boards: ["AQA", "Edexcel", "OCR"], topics: 20 },
-      { name: "Physics", slug: "physics", icon: Zap, color: "bg-red-500", boards: ["AQA", "Edexcel", "OCR"], topics: 22 },
-      { name: "Combined Science", slug: "combined-science", icon: FlaskConical, color: "bg-teal-500", boards: ["AQA", "Edexcel"], topics: 45 },
-    ],
-  },
-  {
-    category: "Humanities",
-    subjects: [
-      { name: "History", slug: "history", icon: Globe, color: "bg-orange-500", boards: ["AQA", "Edexcel", "OCR"], topics: 18 },
-      { name: "Geography", slug: "geography", icon: Globe, color: "bg-teal-500", boards: ["AQA", "Edexcel", "OCR"], topics: 16 },
-      { name: "Religious Studies", slug: "religious-studies", icon: BookOpen, color: "bg-indigo-500", boards: ["AQA", "Edexcel"], topics: 14 },
-    ],
-  },
-  {
-    category: "Languages",
-    subjects: [
-      { name: "French", slug: "french", icon: Globe, color: "bg-blue-400", boards: ["AQA", "Edexcel"], topics: 12 },
-      { name: "Spanish", slug: "spanish", icon: Globe, color: "bg-yellow-500", boards: ["AQA", "Edexcel"], topics: 12 },
-      { name: "German", slug: "german", icon: Globe, color: "bg-zinc-500", boards: ["AQA", "Edexcel"], topics: 12 },
-    ],
-  },
-  {
-    category: "Technology & Computing",
-    subjects: [
-      { name: "Computer Science", slug: "computer-science", icon: Monitor, color: "bg-indigo-500", boards: ["AQA", "Edexcel", "OCR"], topics: 15 },
-      { name: "Design & Technology", slug: "design-technology", icon: Monitor, color: "bg-pink-500", boards: ["AQA", "Edexcel"], topics: 10 },
-      { name: "Food Preparation & Nutrition", slug: "food-nutrition", icon: UtensilsCrossed, color: "bg-orange-400", boards: ["AQA", "Edexcel"], topics: 8 },
-    ],
-  },
-  {
-    category: "Creative & Performing Arts",
-    subjects: [
-      { name: "Art & Design", slug: "art-design", icon: Palette, color: "bg-rose-500", boards: ["AQA", "Edexcel", "OCR"], topics: 6 },
-      { name: "Drama", slug: "drama", icon: Drama, color: "bg-fuchsia-500", boards: ["AQA", "Edexcel"], topics: 8 },
-      { name: "Music", slug: "music", icon: Music, color: "bg-cyan-500", boards: ["AQA", "Edexcel", "OCR"], topics: 8 },
-      { name: "Media Studies", slug: "media-studies", icon: Camera, color: "bg-slate-500", boards: ["AQA", "Edexcel"], topics: 7 },
-    ],
-  },
-  {
-    category: "Social Sciences",
-    subjects: [
-      { name: "Business Studies", slug: "business", icon: Users, color: "bg-emerald-400", boards: ["AQA", "Edexcel"], topics: 12 },
-      { name: "Psychology", slug: "psychology", icon: Brain, color: "bg-purple-400", boards: ["AQA", "Edexcel"], topics: 10 },
-      { name: "Sociology", slug: "sociology", icon: Users, color: "bg-sky-500", boards: ["AQA"], topics: 8 },
-      { name: "PE", slug: "pe", icon: Dumbbell, color: "bg-lime-500", boards: ["AQA", "Edexcel", "OCR"], topics: 10 },
-    ],
-  },
-];
+const presentation = {
+  maths: { icon: Sigma, tone: "subject-blue", line: "Methods, worked knowledge and exam-style recall" },
+  biology: { icon: Dna, tone: "subject-green", line: "Processes, structures, practicals and precise vocabulary" },
+  chemistry: { icon: FlaskConical, tone: "subject-orange", line: "Particles, reactions, calculations and analysis" },
+  physics: { icon: Atom, tone: "subject-purple", line: "Models, equations, units and explanations" },
+  geography: { icon: LandPlot, tone: "subject-teal", line: "Processes, places, case-study thinking and evaluation" },
+  history: { icon: History, tone: "subject-rose", line: "Evidence, causation, change and supported judgement" },
+};
 
 export default function SubjectsPage() {
+  const subjects = getPublishedSubjects();
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-950">
+    <div className="min-h-screen bg-slate-50 text-slate-950">
       <Navbar />
-
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="mb-10">
-          <h1 className="text-3xl font-bold">All GCSE Subjects</h1>
-          <p className="mt-2 text-zinc-500 dark:text-zinc-400">
-            Free revision notes, quizzes and flashcards for every GCSE subject. Select your exam board and start revising.
-          </p>
+      <section className="border-b border-slate-200 bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-16 text-center sm:px-6 lg:px-8 lg:py-20">
+          <span className="rounded-full bg-indigo-100 px-3 py-1.5 text-xs font-black text-indigo-700">AQA GCSE</span>
+          <h1 className="mt-5 text-4xl font-black tracking-tight sm:text-5xl">What are you revising today?</h1>
+          <p className="mx-auto mt-4 max-w-2xl text-lg leading-8 text-slate-600">Pick a subject, choose a topic and start learning immediately. Your progress is saved automatically on this device.</p>
         </div>
-
-        {subjectGroups.map((group) => (
-          <div key={group.category} className="mb-10">
-            <h2 className="mb-4 text-xl font-semibold">{group.category}</h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {group.subjects.map((subject) => (
-                <Link key={subject.slug} href={`/subjects/aqa/${subject.slug}`}>
-                  <Card className="group cursor-pointer border-zinc-200 transition-all hover:shadow-md dark:border-zinc-800">
-                    <CardContent className="p-5">
-                      <div className="flex items-start gap-3">
-                        <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg ${subject.color} text-white`}>
-                          <subject.icon className="h-5 w-5" />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="font-semibold group-hover:text-indigo-600">{subject.name}</h3>
-                          <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-                            {subject.topics} topics
-                          </p>
-                          <div className="mt-2 flex flex-wrap gap-1">
-                            {subject.boards.map((board) => (
-                              <Badge key={board} variant="outline" className="text-[10px]">
-                                {board}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-
+      </section>
+      <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {subjects.map((subject) => {
+            const style = presentation[subject.slug as keyof typeof presentation];
+            const Icon = style.icon;
+            return (
+              <Link key={subject.slug} href={`/subjects/aqa/${subject.slug}`} className={`subject-card ${style.tone} group rounded-3xl border bg-white p-6 transition hover:-translate-y-1 hover:shadow-xl`}>
+                <div className="flex items-start justify-between"><div className="subject-icon flex h-13 w-13 items-center justify-center rounded-2xl"><Icon className="h-6 w-6" /></div><span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-500">{subject.topics.length} topics</span></div>
+                <h2 className="mt-6 text-2xl font-black">{subject.name}</h2>
+                <p className="mt-2 min-h-12 text-sm leading-6 text-slate-500">{style.line}</p>
+                <div className="mt-6 flex items-center gap-2 text-sm font-black text-slate-900 group-hover:text-indigo-600">Start revising <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></div>
+              </Link>
+            );
+          })}
+        </div>
+        <div className="mt-12 rounded-2xl border border-indigo-100 bg-indigo-50 p-6 text-center"><p className="font-extrabold text-indigo-950">No account needed to start.</p><p className="mt-1 text-sm text-indigo-700">Revision progress is stored on this device. Create an account later when cloud sync and premium tools launch.</p></div>
+      </main>
       <Footer />
     </div>
   );

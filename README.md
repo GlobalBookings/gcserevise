@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GCSERevise
 
-## Getting Started
+GCSERevise is a Next.js revision product for six AQA GCSE subjects:
 
-First, run the development server:
+- Maths
+- Biology
+- Chemistry
+- Physics
+- Geography
+- History
+
+The public learning loop works without an account. Each published topic includes revision notes, a five-question auto-marked quiz, recall flashcards, guided tutor support and device-saved progress.
+
+## Current revision library
+
+- 72 topic workspaces
+- 360 auto-marked questions with explanations
+- 544 flashcards
+- Official AQA specification and assessment-resource links
+- A device-local “My Revision” dashboard
+- Guided tutor fallback that works without external credentials
+
+Maths and Science content is compiled from the original Supabase seed banks into `src/data/revision-content.generated.json`. Geography and History starter content lives in `src/data/revision-extensions.ts`.
+
+## Local development
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Run validation with:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run lint
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Regenerate the static Maths and Science content library after editing the seed banks:
 
-## Learn More
+```bash
+npx tsx scripts/build-static-library.ts
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Tutor configuration
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The tutor always has a grounded, deterministic study-pack fallback. To enable live OpenAI responses, configure:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+OPENAI_API_KEY=...
+OPENAI_TUTOR_MODEL=gpt-5.6-terra
+```
 
-## Deploy on Vercel
+`OPENAI_TUTOR_MODEL` is optional. The API route uses the Responses API, keeps the key server-side and falls back automatically if the live request fails.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Data and privacy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Anonymous revision progress and paper counts are stored in the browser on the current device. No account is needed. Existing Supabase authentication remains available, but authenticated users currently return to the same dependable public revision dashboard.
+
+## Deployment
+
+The project keeps its existing Next.js standalone/DigitalOcean architecture. Run the production build before deployment; the generated topic routes are statically rendered and the tutor endpoint is server-rendered.

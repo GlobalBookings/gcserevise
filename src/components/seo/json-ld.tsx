@@ -4,7 +4,7 @@ export function WebsiteJsonLd() {
     "@type": "WebSite",
     name: "GCSERevise",
     url: "https://gcserevise.co.uk",
-    description: "Free GCSE revision platform for all UK students. Revision notes, quizzes, flashcards and personalised study plans for every exam board.",
+    description: "Free AQA GCSE revision notes, quizzes, flashcards, guided topic tutoring and progress tracking for six high-demand subjects.",
     potentialAction: {
       "@type": "SearchAction",
       target: "https://gcserevise.co.uk/subjects?q={search_term_string}",
@@ -26,7 +26,7 @@ export function OrganizationJsonLd() {
     "@type": "EducationalOrganization",
     name: "GCSERevise",
     url: "https://gcserevise.co.uk",
-    description: "Free GCSE revision for every UK student",
+    description: "Free AQA GCSE topic revision for UK students",
     areaServed: {
       "@type": "Country",
       name: "United Kingdom",

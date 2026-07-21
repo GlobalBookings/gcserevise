@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -76,8 +76,6 @@ export default function FlashcardsPage() {
 
   if (finished) {
     const knownCount = known.size;
-    const percentage = Math.round((knownCount / total) * 100);
-
     return (
       <div className="mx-auto max-w-2xl">
         <XPToast
