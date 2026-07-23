@@ -10,19 +10,26 @@ for (const subject of getPublishedSubjects()) {
   for (const topic of subject.topics) paths.push(`/subjects/aqa/${subject.slug}/${topic.slug}`);
 }
 
-const response = await fetch("https://api.indexnow.org/indexnow", {
-  method: "POST",
-  headers: { "content-type": "application/json; charset=utf-8" },
-  body: JSON.stringify({
-    host,
-    key,
-    keyLocation,
-    urlList: paths.map((path) => `https://${host}${path}`),
-  }),
-});
+async function main() {
+  const response = await fetch("https://api.indexnow.org/indexnow", {
+    method: "POST",
+    headers: { "content-type": "application/json; charset=utf-8" },
+    body: JSON.stringify({
+      host,
+      key,
+      keyLocation,
+      urlList: paths.map((path) => `https://${host}${path}`),
+    }),
+  });
 
-if (!response.ok) {
-  throw new Error(`IndexNow returned ${response.status}: ${await response.text()}`);
+  if (!response.ok) {
+    throw new Error(`IndexNow returned ${response.status}: ${await response.text()}`);
+  }
+
+  console.log(`Submitted ${paths.length} URLs to IndexNow (${response.status}).`);
 }
 
-console.log(`Submitted ${paths.length} URLs to IndexNow (${response.status}).`);
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
