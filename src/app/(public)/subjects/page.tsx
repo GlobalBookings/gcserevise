@@ -8,7 +8,7 @@ import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
   title: "GCSE Revision Subjects",
-  description: "Revise AQA GCSE Maths, Science, English, Geography and History with topic notes, quizzes, flashcards and guided tutoring.",
+  description: "Explore free GCSE revision for Maths, English, Science, Geography, History, Business, Computer Science and Religious Studies, organised by topic.",
   path: "/subjects",
 });
 

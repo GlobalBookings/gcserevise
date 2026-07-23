@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const SITE_NAME = "GCSERevise";
 export const SITE_URL = "https://gcserevise.co.uk";
 export const DEFAULT_DESCRIPTION =
-  "Revise AQA GCSE Maths, Science, English, Geography and History with clear notes, quizzes, flashcards, past papers, progress planning and a guided AI tutor.";
+  "Free GCSE revision for Maths, English, Science, Geography, History, Business, Computer Science and Religious Studies, with notes, quizzes, flashcards and exam practice.";
 export const SOCIAL_IMAGE = {
   url: "/og.png",
   width: 1200,
