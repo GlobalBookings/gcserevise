@@ -23,8 +23,9 @@ import {
   Trophy,
   X,
 } from "lucide-react";
-import type { RevisionFlashcard, RevisionQuestion } from "@/data/revision-library";
+import type { RevisionFlashcard, RevisionQuestion, RevisionSection } from "@/data/revision-library";
 import { useLocalProgress, writeTopicProgress } from "@/hooks/use-local-progress";
+import { addMistake } from "@/lib/local-learning";
 
 type StudyTab = "learn" | "quiz" | "flashcards" | "tutor";
 
@@ -48,6 +49,11 @@ interface TopicStudyWorkspaceProps {
   examTip: string;
   flashcards: RevisionFlashcard[];
   questions: RevisionQuestion[];
+  objectives: string[];
+  sections: RevisionSection[];
+  commonMistakes: string[];
+  retrievalPractice: string[];
+  reviewedAt: string;
   officialSpecUrl: string;
   previousTopic: { name: string; slug: string } | null;
   nextTopic: { name: string; slug: string } | null;
@@ -74,6 +80,11 @@ export function TopicStudyWorkspace(props: TopicStudyWorkspaceProps) {
     examTip,
     flashcards,
     questions,
+    objectives,
+    sections,
+    commonMistakes,
+    retrievalPractice,
+    reviewedAt,
     officialSpecUrl,
     previousTopic,
     nextTopic,
@@ -160,6 +171,11 @@ export function TopicStudyWorkspace(props: TopicStudyWorkspaceProps) {
             summary={summary}
             examTip={examTip}
             flashcards={flashcards}
+            objectives={objectives}
+            sections={sections}
+            commonMistakes={commonMistakes}
+            retrievalPractice={retrievalPractice}
+            reviewedAt={reviewedAt}
             completed={progress.notesRead}
             onComplete={() => saveProgress({ notesRead: true })}
             onQuiz={() => setTab("quiz")}
@@ -169,6 +185,9 @@ export function TopicStudyWorkspace(props: TopicStudyWorkspaceProps) {
           <QuizPanel
             topicName={topicName}
             questions={questions}
+            subjectSlug={subjectSlug}
+            subjectName={subjectName}
+            topicSlug={topicSlug}
             bestScore={progress.bestQuiz}
             onFinish={(score) => saveProgress({ bestQuiz: Math.max(score, progress.bestQuiz) })}
             onCards={() => setTab("flashcards")}
@@ -211,11 +230,16 @@ export function TopicStudyWorkspace(props: TopicStudyWorkspaceProps) {
   );
 }
 
-function LearnPanel({ topicName, summary, examTip, flashcards, completed, onComplete, onQuiz }: {
+function LearnPanel({ topicName, summary, examTip, flashcards, objectives, sections, commonMistakes, retrievalPractice, reviewedAt, completed, onComplete, onQuiz }: {
   topicName: string;
   summary: string;
   examTip: string;
   flashcards: RevisionFlashcard[];
+  objectives: string[];
+  sections: RevisionSection[];
+  commonMistakes: string[];
+  retrievalPractice: string[];
+  reviewedAt: string;
   completed: boolean;
   onComplete: () => void;
   onQuiz: () => void;
@@ -234,6 +258,35 @@ function LearnPanel({ topicName, summary, examTip, flashcards, completed, onComp
         </div>
       </section>
 
+      <section className="grid gap-6 lg:grid-cols-[1fr_18rem]">
+        <div className="space-y-6">
+          {sections.map((section) => (
+            <article key={section.heading} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+              <p className="text-xs font-black uppercase tracking-[.16em] text-indigo-600">Revision notes</p>
+              <h2 className="mt-2 text-2xl font-black">{section.heading}</h2>
+              <p className="mt-3 leading-7 text-slate-600">{section.explanation}</p>
+              <ul className="mt-5 space-y-3">
+                {section.bullets.map((bullet) => <li key={bullet} className="flex gap-3 text-sm leading-7 text-slate-700"><CheckCircle2 className="mt-1 h-4 w-4 shrink-0 text-emerald-500" /><span>{bullet}</span></li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
+        <aside className="space-y-5">
+          <div className="rounded-2xl border border-indigo-100 bg-indigo-50 p-5">
+            <h2 className="font-black text-indigo-950">Learning objectives</h2>
+            <ul className="mt-3 space-y-3 text-sm leading-6 text-indigo-900">
+              {objectives.map((objective) => <li key={objective} className="flex gap-2"><Target className="mt-1 h-3.5 w-3.5 shrink-0" /><span>{objective}</span></li>)}
+            </ul>
+          </div>
+          <div className="rounded-2xl border border-rose-100 bg-rose-50 p-5">
+            <h2 className="font-black text-rose-950">Common mistakes</h2>
+            <ul className="mt-3 space-y-3 text-sm leading-6 text-rose-900">
+              {commonMistakes.map((mistake) => <li key={mistake}>• {mistake}</li>)}
+            </ul>
+          </div>
+        </aside>
+      </section>
+
       <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
         <div className="flex items-center justify-between gap-4">
           <div><p className="text-xs font-black uppercase tracking-[.16em] text-indigo-600">Core knowledge</p><h2 className="mt-2 text-2xl font-black">Key facts for {topicName}</h2></div>
@@ -248,6 +301,15 @@ function LearnPanel({ topicName, summary, examTip, flashcards, completed, onComp
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 sm:p-8">
+        <p className="text-xs font-black uppercase tracking-[.16em] text-emerald-700">Active recall</p>
+        <h2 className="mt-2 text-2xl font-black text-emerald-950">Close the notes and answer these</h2>
+        <ol className="mt-5 space-y-3 text-sm leading-7 text-emerald-950">
+          {retrievalPractice.map((prompt, index) => <li key={prompt}><span className="mr-2 font-black">{index + 1}.</span>{prompt}</li>)}
+        </ol>
+        <p className="mt-5 text-xs font-medium text-emerald-800">Content reviewed {new Date(`${reviewedAt}T12:00:00`).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })} against the current linked specification.</p>
       </section>
 
       <section className="rounded-2xl bg-slate-950 p-6 text-white sm:flex sm:items-center sm:justify-between sm:p-8">
@@ -266,8 +328,11 @@ function LearnPanel({ topicName, summary, examTip, flashcards, completed, onComp
   );
 }
 
-function QuizPanel({ topicName, questions, bestScore, onFinish, onCards }: {
+function QuizPanel({ topicName, topicSlug, subjectName, subjectSlug, questions, bestScore, onFinish, onCards }: {
   topicName: string;
+  topicSlug: string;
+  subjectName: string;
+  subjectSlug: string;
   questions: RevisionQuestion[];
   bestScore: number;
   onFinish: (score: number) => void;
@@ -283,7 +348,20 @@ function QuizPanel({ topicName, questions, bestScore, onFinish, onCards }: {
   function checkAnswer() {
     if (selected === null || checked) return;
     setChecked(true);
-    if (selected === question.correct_answer) setScore((value) => value + 1);
+    if (selected === question.correct_answer) {
+      setScore((value) => value + 1);
+    } else {
+      addMistake({
+        subjectSlug,
+        subjectName,
+        topicSlug,
+        topicName,
+        question: question.question,
+        chosenAnswer: question.options[selected],
+        correctAnswer: question.options[question.correct_answer],
+        explanation: question.explanation,
+      });
+    }
   }
 
   function nextQuestion() {

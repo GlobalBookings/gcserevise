@@ -5,9 +5,17 @@ export function WebsiteJsonLd() {
     "@id": "https://gcserevise.co.uk/#website",
     name: "GCSERevise",
     url: "https://gcserevise.co.uk",
-    description: "Free AQA GCSE revision notes, quizzes, flashcards, guided topic tutoring and progress tracking for six high-demand subjects.",
+    description: "Free AQA GCSE revision notes, quizzes, flashcards, guided topic tutoring and progress tracking for eight high-demand subjects.",
     inLanguage: "en-GB",
     publisher: { "@id": "https://gcserevise.co.uk/#organization" },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: "https://gcserevise.co.uk/search?q={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
   };
 
   return (
@@ -126,4 +134,25 @@ export function FAQJsonLd({ faqs }: { faqs: { question: string; answer: string }
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );
+}
+
+export function FlashcardQuizJsonLd({ name, url, cards }: { name: string; url: string; cards: { term: string; definition: string }[] }) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "Quiz",
+    name: `${name} flashcards`,
+    about: { "@type": "Thing", name },
+    educationalLevel: "GCSE",
+    url,
+    hasPart: cards.map((card) => ({
+      "@type": "Question",
+      eduQuestionType: "Flashcard",
+      name: card.term,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: card.definition,
+      },
+    })),
+  };
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />;
 }

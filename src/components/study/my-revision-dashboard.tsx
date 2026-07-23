@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
-import { ArrowRight, BarChart3, BookOpenCheck, Brain, CheckCircle2, Clock3, Flame, Sparkles, Target, Trophy } from "lucide-react";
+import { ArrowRight, BarChart3, BookOpenCheck, Brain, CheckCircle2, CircleAlert, Clock3, Flame, Settings2, Sparkles, Target, Trophy } from "lucide-react";
 import { calculateTopicProgress, isTopicMastered } from "@/lib/local-progress";
 import { useLocalProgress } from "@/hooks/use-local-progress";
+import { useLearnerProfile, useMistakes } from "@/hooks/use-local-learning";
+import { daysUntil } from "@/lib/local-learning";
 
 interface DashboardSubject {
   name: string;
@@ -14,6 +16,8 @@ interface DashboardSubject {
 
 export function MyRevisionDashboard({ subjects }: { subjects: DashboardSubject[] }) {
   const store = useLocalProgress();
+  const profile = useLearnerProfile();
+  const mistakes = useMistakes();
 
   const allTopics = useMemo(() => subjects.flatMap((subject) => subject.topics.map((topic) => ({ ...topic, subjectName: subject.name, subjectSlug: subject.slug, progress: store[`${subject.slug}:${topic.slug}`] }))), [store, subjects]);
   const started = allTopics.filter((topic) => calculateTopicProgress(topic.progress) > 0);
@@ -24,14 +28,27 @@ export function MyRevisionDashboard({ subjects }: { subjects: DashboardSubject[]
     ? [...started].filter((topic) => !isTopicMastered(topic.progress)).sort((a, b) => calculateTopicProgress(a.progress) - calculateTopicProgress(b.progress))
     : subjects.map((subject) => ({ ...subject.topics[0], subjectName: subject.name, subjectSlug: subject.slug, progress: undefined }))
   ).slice(0, 4);
+  const eligibleSubjects = profile.selectedSubjects.length ? subjects.filter((subject) => profile.selectedSubjects.includes(subject.slug)) : subjects;
+  const dailyTopicCount = Math.max(1, Math.floor(profile.dailyMinutes / 15));
+  const dailyPlan = eligibleSubjects
+    .flatMap((subject) => subject.topics.map((topic) => ({ ...topic, subjectName: subject.name, subjectSlug: subject.slug, progress: store[`${subject.slug}:${topic.slug}`] })))
+    .filter((topic) => !isTopicMastered(topic.progress))
+    .sort((a, b) => {
+      const aStarted = calculateTopicProgress(a.progress) > 0 ? 0 : 1;
+      const bStarted = calculateTopicProgress(b.progress) > 0 ? 0 : 1;
+      return aStarted - bStarted || calculateTopicProgress(a.progress) - calculateTopicProgress(b.progress);
+    })
+    .slice(0, dailyTopicCount);
+  const examCountdown = daysUntil(profile.examDate);
+  const openMistakes = mistakes.filter((mistake) => !mistake.resolved).length;
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-950">
       <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <div><p className="text-xs font-black uppercase tracking-[.16em] text-indigo-600">My revision</p><h1 className="mt-2 text-4xl font-black tracking-tight">Keep the momentum going.</h1><p className="mt-3 text-slate-600">Your activity on this device is saved automatically.</p></div>
-            <Link href="/subjects" className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-200">Revise a new topic <ArrowRight className="h-4 w-4" /></Link>
+            <div><p className="text-xs font-black uppercase tracking-[.16em] text-indigo-600">My revision</p><h1 className="mt-2 text-4xl font-black tracking-tight">Keep the momentum going.</h1><p className="mt-3 text-slate-600">{profile.completedSetup ? `Target grade ${profile.targetGrade} · ${profile.dailyMinutes} minutes a day${examCountdown !== null ? ` · ${examCountdown} days to your first exam` : ""}` : "Set your subjects and available time to get a focused daily plan."}</p></div>
+            <div className="flex flex-wrap gap-3"><Link href="/my-revision/setup" className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-bold"><Settings2 className="h-4 w-4" /> {profile.completedSetup ? "Edit plan" : "Set up my plan"}</Link><Link href="/subjects" className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-200">Revise a new topic <ArrowRight className="h-4 w-4" /></Link></div>
           </div>
         </div>
       </section>
@@ -45,6 +62,15 @@ export function MyRevisionDashboard({ subjects }: { subjects: DashboardSubject[]
             { icon: Flame, value: recent.length ? "Active" : "Start", label: "Revision habit", tone: "bg-orange-100 text-orange-600" },
           ].map((stat) => <div key={stat.label} className="rounded-2xl border border-slate-200 bg-white p-5"><div className={`flex h-10 w-10 items-center justify-center rounded-xl ${stat.tone}`}><stat.icon className="h-5 w-5" /></div><p className="mt-4 text-3xl font-black">{stat.value}</p><p className="mt-1 text-sm font-medium text-slate-500">{stat.label}</p></div>)}
         </div>
+
+        <section className="mt-8 overflow-hidden rounded-3xl bg-slate-950 p-7 text-white sm:p-9">
+          <div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-center"><div><p className="text-xs font-black uppercase tracking-[.16em] text-indigo-300">Today&apos;s plan</p><h2 className="mt-2 text-2xl font-black">{dailyPlan.length} focused {dailyPlan.length === 1 ? "task" : "tasks"} · about {dailyPlan.length * 15} minutes</h2><p className="mt-2 text-sm text-slate-400">Prioritised from your selected subjects and least-secure topics.</p></div>{!profile.completedSetup && <Link href="/my-revision/setup" className="rounded-xl bg-indigo-500 px-4 py-3 text-sm font-bold">Personalise this plan</Link>}</div>
+          <div className="mt-6 grid gap-3 md:grid-cols-2">
+            {dailyPlan.map((topic, index) => <Link key={`${topic.subjectSlug}:${topic.slug}`} href={`/subjects/aqa/${topic.subjectSlug}/${topic.slug}`} className="flex items-center gap-3 rounded-xl bg-white/10 p-4 transition hover:bg-white/15"><span className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-500 text-sm font-black">{index + 1}</span><div className="min-w-0 flex-1"><p className="truncate font-extrabold">{topic.name}</p><p className="text-xs text-slate-400">{topic.subjectName} · {calculateTopicProgress(topic.progress) ? `${calculateTopicProgress(topic.progress)}% secure` : "Start this topic"}</p></div><ArrowRight className="h-4 w-4 text-slate-400" /></Link>)}
+          </div>
+        </section>
+
+        <Link href="/my-revision/mistakes" className="mt-6 flex flex-col justify-between gap-4 rounded-2xl border border-rose-200 bg-rose-50 p-5 sm:flex-row sm:items-center"><div className="flex items-center gap-3"><div className="flex h-11 w-11 items-center justify-center rounded-xl bg-rose-100 text-rose-600"><CircleAlert className="h-5 w-5" /></div><div><h2 className="font-black text-rose-950">Mistake notebook</h2><p className="text-sm text-rose-800">{openMistakes ? `${openMistakes} quiz ${openMistakes === 1 ? "answer needs" : "answers need"} another look.` : "Wrong quiz answers will be collected here automatically."}</p></div></div><span className="flex items-center gap-2 text-sm font-black text-rose-700">Review mistakes <ArrowRight className="h-4 w-4" /></span></Link>
 
         {started.length === 0 ? (
           <section className="mt-8 overflow-hidden rounded-3xl bg-slate-950 p-8 text-white sm:p-10">

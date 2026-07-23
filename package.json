@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "content:build": "tsx scripts/build-static-library.ts",
-    "content:check": "tsx scripts/validate-revision-content.ts"
+    "content:check": "tsx scripts/validate-revision-content.ts",
+    "seo:indexnow": "tsx scripts/submit-indexnow.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.9.0",

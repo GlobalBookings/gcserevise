@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/brand/brand-logo";
 import { cn } from "@/lib/utils";
@@ -11,8 +11,9 @@ import { useState } from "react";
 const publicLinks = [
   { href: "/subjects", label: "Subjects" },
   { href: "/past-papers", label: "Past Papers" },
+  { href: "/exam-resources", label: "Exam Resources" },
   { href: "/my-revision", label: "My Revision" },
-  { href: "/#premium", label: "Premium" },
+  { href: "/premium", label: "Premium" },
 ];
 
 export function Navbar() {
@@ -45,6 +46,7 @@ export function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-3 md:flex">
+          <Link href="/search" aria-label="Search revision resources" className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 hover:text-indigo-600"><Search className="h-4 w-4" /></Link>
           <Link href="/auth/login">
             <Button variant="ghost" size="sm">Log in</Button>
           </Link>

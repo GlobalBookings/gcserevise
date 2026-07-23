@@ -7,17 +7,20 @@ import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
   title: "AQA GCSE Past Papers & Mark Schemes",
-  description: "Find official AQA GCSE past papers and mark schemes for Maths, Biology, Chemistry, Physics, Geography and History, with a simple practice tracker.",
+  description: "Find official AQA GCSE past papers and mark schemes for Maths, Science, English, Geography and History, with a simple practice tracker.",
   path: "/past-papers",
 });
 
 const subjects = [
+  { name: "Combined Science", slug: "combined-science", description: "Six Trilogy papers across Biology, Chemistry and Physics, with Foundation and Higher resources.", url: "https://www.aqa.org.uk/subjects/science/gcse/science-8464/assessment-resources" },
   { name: "Maths", slug: "maths", description: "Foundation and Higher papers 1, 2 and 3, with official mark schemes.", url: "https://www.aqa.org.uk/subjects/mathematics/gcse/mathematics-8300/assessment-resources" },
   { name: "Biology", slug: "biology", description: "Paper 1 and Paper 2 resources for Foundation and Higher tiers.", url: "https://www.aqa.org.uk/subjects/biology/gcse/biology-8461/assessment-resources" },
   { name: "Chemistry", slug: "chemistry", description: "Paper 1 and Paper 2 question papers, mark schemes and reports.", url: "https://www.aqa.org.uk/subjects/chemistry/gcse/chemistry-8462/assessment-resources" },
   { name: "Physics", slug: "physics", description: "Paper 1 and Paper 2 practice across Foundation and Higher tiers.", url: "https://www.aqa.org.uk/subjects/physics/gcse/physics-8463/assessment-resources" },
   { name: "Geography", slug: "geography", description: "Living world, human environment and geographical applications papers.", url: "https://www.aqa.org.uk/subjects/geography/gcse/geography-8035/assessment-resources" },
   { name: "History", slug: "history", description: "Understanding the modern world and shaping the nation resources.", url: "https://www.aqa.org.uk/subjects/history/gcse/history-8145/assessment-resources" },
+  { name: "English Language", slug: "english-language", description: "Paper 1 and Paper 2 question papers, inserts and mark schemes.", url: "https://www.aqa.org.uk/subjects/english/gcse/english-8700/assessment-resources" },
+  { name: "English Literature", slug: "english-literature", description: "Shakespeare, modern texts, nineteenth-century novels and poetry papers.", url: "https://www.aqa.org.uk/subjects/english/gcse/english-8702/assessment-resources" },
 ];
 
 export default function PastPapersPage() {

@@ -16,6 +16,10 @@ for (const subject of subjects) {
     }
     if (!content.summary.trim()) errors.push(`${subject.slug}/${topic.slug}: missing summary`);
     if (!content.examTip.trim()) errors.push(`${subject.slug}/${topic.slug}: missing exam tip`);
+    if (content.objectives.length < 3) errors.push(`${subject.slug}/${topic.slug}: needs at least 3 objectives`);
+    if (content.sections.length < 2) errors.push(`${subject.slug}/${topic.slug}: needs at least 2 note sections`);
+    if (content.commonMistakes.length < 3) errors.push(`${subject.slug}/${topic.slug}: needs at least 3 common mistakes`);
+    if (content.retrievalPractice.length < 4) errors.push(`${subject.slug}/${topic.slug}: needs at least 4 retrieval prompts`);
     if (content.flashcards.length < 6) errors.push(`${subject.slug}/${topic.slug}: needs at least 6 flashcards`);
     if (content.questions.length < 5) errors.push(`${subject.slug}/${topic.slug}: needs at least 5 questions`);
     flashcardCount += content.flashcards.length;
@@ -28,7 +32,7 @@ for (const subject of subjects) {
   }
 }
 
-if (subjects.length !== 6) errors.push(`expected 6 published subjects, found ${subjects.length}`);
+if (subjects.length !== 8) errors.push(`expected 8 published subjects, found ${subjects.length}`);
 if (errors.length) {
   console.error(errors.join("\n"));
   process.exit(1);

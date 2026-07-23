@@ -3,6 +3,7 @@ import {
   ArrowRight,
   Atom,
   Bot,
+  BookOpenText,
   Brain,
   Check,
   ChevronRight,
@@ -15,6 +16,8 @@ import {
   History,
   LandPlot,
   Layers3,
+  LibraryBig,
+  Microscope,
   Sigma,
   Sparkles,
   Target,
@@ -26,6 +29,14 @@ import { Footer } from "@/components/layout/footer";
 import { FAQJsonLd } from "@/components/seo/json-ld";
 
 const subjects = [
+  {
+    name: "Combined Science",
+    slug: "combined-science",
+    icon: Microscope,
+    description: "AQA Trilogy Biology, Chemistry, Physics and required practicals",
+    topics: 32,
+    tone: "subject-teal",
+  },
   {
     name: "Maths",
     slug: "maths",
@@ -74,19 +85,35 @@ const subjects = [
     topics: 8,
     tone: "subject-rose",
   },
+  {
+    name: "English Language",
+    slug: "english-language",
+    icon: BookOpenText,
+    description: "Fiction, non-fiction, comparison and confident writing",
+    topics: 8,
+    tone: "subject-purple",
+  },
+  {
+    name: "English Literature",
+    slug: "english-literature",
+    icon: LibraryBig,
+    description: "Texts, themes, quotations and essay interpretation",
+    topics: 7,
+    tone: "subject-blue",
+  },
 ];
 
 const studyTools = [
   { icon: FileText, title: "Crystal-clear notes", text: "Specification-matched explanations without the waffle.", color: "text-blue-600 bg-blue-50" },
   { icon: Brain, title: "Quick-fire quizzes", text: "Find gaps fast with instant feedback and worked answers.", color: "text-violet-600 bg-violet-50" },
-  { icon: Layers3, title: "Smart flashcards", text: "Remember more with spaced repetition that adapts to you.", color: "text-amber-600 bg-amber-50" },
+  { icon: Layers3, title: "Active-recall flashcards", text: "Rate every card honestly and repeat the knowledge that needs work.", color: "text-amber-600 bg-amber-50" },
   { icon: FileText, title: "Past papers", text: "Practise exam questions with mark schemes in one place.", color: "text-emerald-600 bg-emerald-50" },
   { icon: Bot, title: "AI tutor", text: "Ask for a hint, a simpler explanation or a practice question.", color: "text-fuchsia-600 bg-fuchsia-50" },
 ];
 
 const faqs = [
   { question: "Can I use GCSERevise for free?", answer: "Yes. Every published study pack, quiz, flashcard deck, guided tutor and progress dashboard is available without an account. Premium features such as cloud sync and expanded live AI support are planned for later." },
-  { question: "Which subjects do you cover?", answer: "GCSERevise focuses on six high-demand subjects: Maths, Biology, Chemistry, Physics, Geography and History. Each subject is broken down into manageable specification-aligned topics." },
+  { question: "Which subjects do you cover?", answer: "GCSERevise currently covers nine high-demand AQA routes: Combined Science, Maths, Biology, Chemistry, Physics, Geography, History, English Language and English Literature. Each is broken into manageable specification-aligned topics." },
   { question: "Which exam boards are supported?", answer: "We are building coverage for the major UK exam boards, beginning with AQA and expanding the same topic-level experience across Edexcel and OCR." },
   { question: "How does the AI tutor help?", answer: "The AI tutor is designed for revision. It can explain a topic in simpler language, give a hint without revealing the answer, quiz you, or help you understand where an exam response lost marks." },
 ];
@@ -183,7 +210,7 @@ export default function HomePage() {
           <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
             <div>
               <p className="eyebrow">Pick a subject</p>
-              <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">Six subjects. One place to master them.</h2>
+              <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">Nine subject routes. One place to master them.</h2>
               <p className="mt-3 max-w-2xl text-lg text-slate-600">Every topic follows the same simple path: learn it, test it, remember it.</p>
             </div>
             <Link href="/subjects" className="group flex items-center gap-1 text-sm font-bold text-indigo-600">Browse all topics <ChevronRight className="h-4 w-4 transition group-hover:translate-x-1" /></Link>
@@ -275,11 +302,11 @@ export default function HomePage() {
                 <Check className="h-7 w-7 text-emerald-600" />
               </div>
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                {["72 complete topic workspaces", "360 auto-marked questions", "544 recall flashcards", "Guided topic tutor", "Device-saved mastery tracking", "Official AQA paper links"].map((feature) => (
+                {["87 complete topic workspaces", "435 auto-marked questions", "634 recall flashcards", "Guided topic tutor", "Device-saved mastery tracking", "Official AQA paper links"].map((feature) => (
                   <div key={feature} className="flex items-center gap-2 text-sm font-semibold text-slate-700"><Check className="h-4 w-4 shrink-0 text-emerald-500" /> {feature}</div>
                 ))}
               </div>
-              <Link href="/subjects" className="mt-7 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 font-bold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-700">Start revising now <ArrowRight className="h-4 w-4" /></Link>
+              <div className="mt-7 grid gap-3 sm:grid-cols-2"><Link href="/subjects" className="flex h-12 items-center justify-center gap-2 rounded-xl bg-indigo-600 font-bold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-700">Start revising now <ArrowRight className="h-4 w-4" /></Link><Link href="/premium" className="flex h-12 items-center justify-center rounded-xl border border-indigo-200 font-bold text-indigo-700">See Premium roadmap</Link></div>
             </div>
           </div>
         </section>

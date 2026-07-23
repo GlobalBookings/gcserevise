@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowRight, Atom, Dna, FlaskConical, History, LandPlot, Sigma } from "lucide-react";
+import { ArrowRight, Atom, BookOpenText, Dna, FlaskConical, History, LandPlot, LibraryBig, Microscope, Sigma } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { getPublishedSubjects } from "@/data/revision-library";
@@ -8,7 +8,7 @@ import { createPageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = createPageMetadata({
   title: "GCSE Revision Subjects",
-  description: "Revise AQA GCSE Maths, Biology, Chemistry, Physics, Geography and History with topic notes, quizzes, flashcards and guided tutoring.",
+  description: "Revise AQA GCSE Maths, Science, English, Geography and History with topic notes, quizzes, flashcards and guided tutoring.",
   path: "/subjects",
 });
 
@@ -19,10 +19,15 @@ const presentation = {
   physics: { icon: Atom, tone: "subject-purple", line: "Models, equations, units and explanations" },
   geography: { icon: LandPlot, tone: "subject-teal", line: "Processes, places, case-study thinking and evaluation" },
   history: { icon: History, tone: "subject-rose", line: "Evidence, causation, change and supported judgement" },
+  "english-language": { icon: BookOpenText, tone: "subject-purple", line: "Reading analysis, comparison and confident writing" },
+  "english-literature": { icon: LibraryBig, tone: "subject-blue", line: "Texts, themes, quotations and essay thinking" },
+  "combined-science": { icon: Microscope, tone: "subject-teal", line: "A single route through Trilogy Biology, Chemistry and Physics" },
 };
 
 export default function SubjectsPage() {
   const subjects = getPublishedSubjects();
+  const combinedTopics = subjects.filter((subject) => ["biology", "chemistry", "physics"].includes(subject.slug)).flatMap((subject) => subject.topics);
+  const subjectCards = [{ name: "Combined Science: Trilogy", slug: "combined-science", topics: combinedTopics }, ...subjects];
   return (
     <div className="min-h-screen bg-slate-50 text-slate-950">
       <Navbar />
@@ -35,7 +40,7 @@ export default function SubjectsPage() {
       </section>
       <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {subjects.map((subject) => {
+          {subjectCards.map((subject) => {
             const style = presentation[subject.slug as keyof typeof presentation];
             const Icon = style.icon;
             return (

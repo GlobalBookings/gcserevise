@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { TopicStudyWorkspace } from "@/components/study/topic-study-workspace";
-import { BreadcrumbJsonLd, LearningResourceJsonLd } from "@/components/seo/json-ld";
+import { BreadcrumbJsonLd, FlashcardQuizJsonLd, LearningResourceJsonLd } from "@/components/seo/json-ld";
 import {
   getAdjacentTopics,
   getPublishedSubjects,
@@ -54,6 +54,7 @@ export default async function TopicPage({ params }: PageProps) {
         { name: topic.name, url: pageUrl },
       ]} />
       <LearningResourceJsonLd name={`AQA GCSE ${subject.name}: ${topic.name}`} description={content.summary} provider="GCSERevise" url={pageUrl} />
+      <FlashcardQuizJsonLd name={`AQA GCSE ${subject.name}: ${topic.name}`} url={pageUrl} cards={content.flashcards} />
       <TopicStudyWorkspace
         board={board}
         subjectName={subject.name}
@@ -67,6 +68,11 @@ export default async function TopicPage({ params }: PageProps) {
         examTip={content.examTip}
         flashcards={content.flashcards}
         questions={content.questions}
+        objectives={content.objectives}
+        sections={content.sections}
+        commonMistakes={content.commonMistakes}
+        retrievalPractice={content.retrievalPractice}
+        reviewedAt={content.reviewedAt}
         officialSpecUrl={OFFICIAL_SPEC_URLS[subjectSlug]}
         previousTopic={adjacent.previous ? { name: adjacent.previous.name, slug: adjacent.previous.slug } : null}
         nextTopic={adjacent.next ? { name: adjacent.next.name, slug: adjacent.next.slug } : null}

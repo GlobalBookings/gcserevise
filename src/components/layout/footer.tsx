@@ -11,19 +11,22 @@ export function Footer() {
               <BrandLogo inverted compact />
             </Link>
             <p className="mt-3 max-w-xs text-sm leading-6 text-slate-400">
-              A clearer, smarter way to revise Maths, Science, Geography and History.
+              A clearer, smarter way to revise Maths, Science, English, Geography and History.
             </p>
           </div>
 
           <div>
             <h4 className="text-sm font-semibold">Subjects</h4>
             <ul className="mt-3 space-y-2 text-sm text-slate-400">
+              <li><Link href="/subjects/aqa/combined-science" className="hover:text-indigo-600">Combined Science</Link></li>
               <li><Link href="/subjects/aqa/maths" className="hover:text-indigo-600">Maths</Link></li>
               <li><Link href="/subjects/aqa/biology" className="hover:text-indigo-600">Biology</Link></li>
               <li><Link href="/subjects/aqa/chemistry" className="hover:text-indigo-600">Chemistry</Link></li>
               <li><Link href="/subjects/aqa/physics" className="hover:text-indigo-600">Physics</Link></li>
               <li><Link href="/subjects/aqa/geography" className="hover:text-indigo-600">Geography</Link></li>
               <li><Link href="/subjects/aqa/history" className="hover:text-indigo-600">History</Link></li>
+              <li><Link href="/subjects/aqa/english-language" className="hover:text-indigo-600">English Language</Link></li>
+              <li><Link href="/subjects/aqa/english-literature" className="hover:text-indigo-600">English Literature</Link></li>
             </ul>
           </div>
 
@@ -33,7 +36,10 @@ export function Footer() {
               <li><Link href="/past-papers" className="hover:text-indigo-600">Past Papers</Link></li>
               <li><Link href="/subjects" className="hover:text-indigo-600">All Subjects</Link></li>
               <li><Link href="/my-revision" className="hover:text-indigo-600">My Revision</Link></li>
-              <li><Link href="/#premium" className="hover:text-indigo-600">Premium</Link></li>
+              <li><Link href="/search" className="hover:text-indigo-600">Search</Link></li>
+              <li><Link href="/exam-resources" className="hover:text-indigo-600">Exam Resources</Link></li>
+              <li><Link href="/premium" className="hover:text-indigo-600">Premium</Link></li>
+              <li><Link href="/editorial-standards" className="hover:text-indigo-600">Editorial Standards</Link></li>
             </ul>
           </div>
 
