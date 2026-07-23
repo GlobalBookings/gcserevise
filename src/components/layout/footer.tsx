@@ -27,6 +27,9 @@ export function Footer() {
               <li><Link href="/subjects/aqa/history" className="hover:text-indigo-600">History</Link></li>
               <li><Link href="/subjects/aqa/english-language" className="hover:text-indigo-600">English Language</Link></li>
               <li><Link href="/subjects/aqa/english-literature" className="hover:text-indigo-600">English Literature</Link></li>
+              <li><Link href="/subjects/aqa/religious-studies" className="hover:text-indigo-600">Religious Studies</Link></li>
+              <li><Link href="/subjects/aqa/computer-science" className="hover:text-indigo-600">Computer Science</Link></li>
+              <li><Link href="/subjects/aqa/business" className="hover:text-indigo-600">Business</Link></li>
             </ul>
           </div>
 

@@ -21,6 +21,9 @@ const subjects = [
   { name: "History", slug: "history", description: "Understanding the modern world and shaping the nation resources.", url: "https://www.aqa.org.uk/subjects/history/gcse/history-8145/assessment-resources" },
   { name: "English Language", slug: "english-language", description: "Paper 1 and Paper 2 question papers, inserts and mark schemes.", url: "https://www.aqa.org.uk/subjects/english/gcse/english-8700/assessment-resources" },
   { name: "English Literature", slug: "english-literature", description: "Shakespeare, modern texts, nineteenth-century novels and poetry papers.", url: "https://www.aqa.org.uk/subjects/english/gcse/english-8702/assessment-resources" },
+  { name: "Religious Studies", slug: "religious-studies", description: "Religious Studies A beliefs, practices and thematic studies papers.", url: "https://www.aqa.org.uk/subjects/religious-studies/gcse/religious-studies-8062/assessment-resources" },
+  { name: "Computer Science", slug: "computer-science", description: "Computational thinking, programming and computing concepts assessment resources.", url: "https://www.aqa.org.uk/subjects/computer-science/gcse/computer-science-8525/assessment-resources" },
+  { name: "Business", slug: "business", description: "Business influences, operations, human resources, marketing and finance papers.", url: "https://www.aqa.org.uk/subjects/business/gcse/business-8132/assessment-resources" },
 ];
 
 export default function PastPapersPage() {

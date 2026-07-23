@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { WebsiteJsonLd, OrganizationJsonLd } from "@/components/seo/json-ld";
 import { DEFAULT_DESCRIPTION, SITE_NAME, SITE_URL, SOCIAL_IMAGE } from "@/lib/seo";
+import { CloudProgressSync } from "@/components/platform/cloud-progress-sync";
+import { ProductAnalytics } from "@/components/platform/product-analytics";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -75,6 +77,8 @@ export default function RootLayout({
       >
         <WebsiteJsonLd />
         <OrganizationJsonLd />
+        <CloudProgressSync />
+        <ProductAnalytics />
         {children}
       </body>
     </html>

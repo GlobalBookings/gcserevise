@@ -5,7 +5,7 @@ export function WebsiteJsonLd() {
     "@id": "https://gcserevise.co.uk/#website",
     name: "GCSERevise",
     url: "https://gcserevise.co.uk",
-    description: "Free AQA GCSE revision notes, quizzes, flashcards, guided topic tutoring and progress tracking for eight high-demand subjects.",
+    description: "Free GCSE revision notes, quizzes, flashcards, worked practice, guided topic tutoring and progress tracking across high-demand subjects.",
     inLanguage: "en-GB",
     publisher: { "@id": "https://gcserevise.co.uk/#organization" },
     potentialAction: {

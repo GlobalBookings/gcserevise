@@ -15,6 +15,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/premium`, lastModified: contentReviewed, changeFrequency: "monthly", priority: 0.5 },
     { url: `${BASE_URL}/editorial-standards`, lastModified: contentReviewed, changeFrequency: "monthly", priority: 0.5 },
     { url: `${BASE_URL}/subjects/aqa/combined-science`, lastModified: contentReviewed, changeFrequency: "weekly", priority: 0.95 },
+    { url: `${BASE_URL}/subjects/aqa`, lastModified: contentReviewed, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${BASE_URL}/subjects/edexcel`, lastModified: contentReviewed, changeFrequency: "monthly", priority: 0.75 },
+    { url: `${BASE_URL}/subjects/ocr`, lastModified: contentReviewed, changeFrequency: "monthly", priority: 0.75 },
   ];
   for (const subject of getPublishedSubjects()) {
     pages.push({ url: `${BASE_URL}/subjects/aqa/${subject.slug}`, lastModified: contentReviewed, changeFrequency: "weekly", priority: 0.9 });

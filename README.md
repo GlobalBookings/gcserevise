@@ -1,26 +1,22 @@
 # GCSERevise
 
-GCSERevise is a Next.js revision product for six AQA GCSE subjects:
+GCSERevise is a local-first Next.js revision platform for high-demand UK GCSE routes.
 
-- Maths
-- Biology
-- Chemistry
-- Physics
-- Geography
-- History
+## Learning platform
 
-The public learning loop works without an account. Each published topic includes revision notes, a five-question auto-marked quiz, recall flashcards, guided tutor support and device-saved progress.
+- 11 complete AQA subjects plus a Combined Science: Trilogy route
+- 111 unique topic workspaces
+- 555 auto-marked questions with explanations
+- 778 active-recall flashcards
+- 222 exam-practice prompts with approaches, mark points and worked answers
+- Structured notes, objectives, common mistakes and retrieval prompts
+- Guided topic tutor with a deterministic fallback
+- Diagnostic checks, adaptive daily planning and a mistake notebook
+- Site-wide topic and key-term search
+- Official specification and assessment-resource links
+- Edexcel and OCR board hubs that clearly distinguish shared core knowledge from board-specific assessment
 
-## Current revision library
-
-- 72 topic workspaces
-- 360 auto-marked questions with explanations
-- 544 flashcards
-- Official AQA specification and assessment-resource links
-- A device-local “My Revision” dashboard
-- Guided tutor fallback that works without external credentials
-
-Maths and Science content is compiled from the original Supabase seed banks into `src/data/revision-content.generated.json`. Geography and History starter content lives in `src/data/revision-extensions.ts`.
+The public learning loop works without an account. Progress is stored on the device first. Authenticated learners can sync the same state through Supabase after migration `004_learning_platform.sql` is applied.
 
 ## Local development
 
@@ -29,34 +25,46 @@ npm ci
 npm run dev
 ```
 
-Run validation with:
+Validate the complete static library and production build:
 
 ```bash
+npm run content:check
 npm run lint
 npm run build
 ```
 
-Regenerate the static Maths and Science content library after editing the seed banks:
+Regenerate the original Maths and Science JSON library after editing its source seed banks:
 
 ```bash
-npx tsx scripts/build-static-library.ts
+npm run content:build
 ```
 
-## Tutor configuration
+## Environment
 
-The tutor always has a grounded, deterministic study-pack fallback. To enable live OpenAI responses, configure:
+Copy `.env.example` to `.env.local` and configure the public Supabase project values. The tutor always has a grounded study-pack fallback; `OPENAI_API_KEY` only enables live responses.
+
+A Supabase user with `app_metadata.role = editor` receives access to `/editor/review` and `/editor/analytics`. The same claim is enforced by row-level security for review decisions and aggregate analytics.
+
+## Database
+
+Apply migrations in order through Supabase. Migration `004_learning_platform.sql` adds:
+
+- local-first learner cloud state protected by row-level security;
+- the human content-review queue;
+- aggregate, no-cookie product analytics.
+
+Analytics stores daily event counts only. It does not store IP addresses, cookies, email addresses or individual browsing histories.
+
+## SEO and discovery
+
+Topic routes are statically generated with canonical metadata, breadcrumbs, `LearningResource` data and visible flashcard `Quiz`/`Question` markup. The sitemap includes all public resources and exam-board hubs. Robots rules explicitly allow Googlebot, Bingbot, OAI-SearchBot and GPTBot while excluding learner, editor, authentication and API routes.
+
+After a production deployment:
 
 ```bash
-OPENAI_API_KEY=...
-OPENAI_TUTOR_MODEL=gpt-5.6-terra
+npm run seo:indexnow
 ```
-
-`OPENAI_TUTOR_MODEL` is optional. The API route uses the Responses API, keeps the key server-side and falls back automatically if the live request fails.
-
-## Data and privacy
-
-Anonymous revision progress and paper counts are stored in the browser on the current device. No account is needed. Existing Supabase authentication remains available, but authenticated users currently return to the same dependable public revision dashboard.
 
 ## Deployment
 
-The project keeps its existing Next.js standalone/DigitalOcean architecture. Run the production build before deployment; the generated topic routes are statically rendered and the tutor endpoint is server-rendered.
+The project keeps its existing Next.js standalone/DigitalOcean architecture. A push to `main` triggers production deployment for `https://gcserevise.co.uk`.

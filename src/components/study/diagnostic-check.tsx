@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ArrowRight, CheckCircle2, RotateCcw, Target, X } from "lucide-react";
 import type { RevisionQuestion } from "@/data/revision-library";
+import { trackProductEvent } from "@/lib/product-analytics";
 
 interface DiagnosticSubject {
   name: string;
@@ -25,6 +26,7 @@ export function DiagnosticCheck({ subjects }: { subjects: DiagnosticSubject[] })
     setAnswers((items) => [...items, { correct: selected === current.question.correct_answer, topicName: current.topicName, topicSlug: current.topicSlug }]);
     setIndex((value) => value + 1);
     setSelected(null);
+    if (index === subject.questions.length - 1) trackProductEvent("diagnostic_complete", subject.slug);
   }
 
   function reset(nextSubject = subjectSlug) {

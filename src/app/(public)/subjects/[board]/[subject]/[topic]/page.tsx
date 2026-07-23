@@ -72,6 +72,7 @@ export default async function TopicPage({ params }: PageProps) {
         sections={content.sections}
         commonMistakes={content.commonMistakes}
         retrievalPractice={content.retrievalPractice}
+        examPractice={content.examPractice}
         reviewedAt={content.reviewedAt}
         officialSpecUrl={OFFICIAL_SPEC_URLS[subjectSlug]}
         previousTopic={adjacent.previous ? { name: adjacent.previous.name, slug: adjacent.previous.slug } : null}

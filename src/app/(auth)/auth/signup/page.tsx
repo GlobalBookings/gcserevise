@@ -17,6 +17,7 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [confirmationSent, setConfirmationSent] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -30,7 +31,7 @@ export default function SignupPage() {
     }
 
     const supabase = createClient();
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -44,7 +45,8 @@ export default function SignupPage() {
       return;
     }
 
-    router.push("/my-revision");
+    if (data.session) router.push("/my-revision");
+    else { setConfirmationSent(true); setLoading(false); }
   }
 
   return (
@@ -62,7 +64,7 @@ export default function SignupPage() {
             <CardDescription>Start your GCSE revision journey</CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            {confirmationSent ? <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-5 text-center"><CheckCircle2 className="mx-auto h-8 w-8 text-emerald-600" /><h2 className="mt-3 font-black text-emerald-950">Check your email</h2><p className="mt-2 text-sm leading-6 text-emerald-800">Use the confirmation link from Supabase, then sign in to sync your revision across devices.</p><Link href="/auth/login" className="mt-4 inline-flex rounded-lg bg-emerald-600 px-4 py-2 text-sm font-bold text-white">Go to sign in</Link></div> : <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
                 <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600 dark:bg-red-950/50 dark:text-red-400">
                   {error}
@@ -115,10 +117,10 @@ export default function SignupPage() {
               <Button type="submit" className="w-full" disabled={loading}>
                 {loading ? "Creating account..." : "Sign up free"}
               </Button>
-            </form>
+            </form>}
 
             <div className="mt-6 space-y-2">
-              {["No payment required", "Six AQA subjects", "Start revising immediately"].map((item) => (
+              {["No payment required", "Twelve subject routes", "Start revising immediately"].map((item) => (
                 <div key={item} className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
                   <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                   {item}

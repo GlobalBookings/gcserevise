@@ -6,12 +6,12 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/dashboard/", "/api/", "/auth/", "/my-revision/"],
+        disallow: ["/dashboard/", "/api/", "/auth/", "/my-revision/", "/editor/"],
       },
-      { userAgent: "Googlebot", allow: "/", disallow: ["/dashboard/", "/api/", "/auth/", "/my-revision/"] },
-      { userAgent: "Bingbot", allow: "/", disallow: ["/dashboard/", "/api/", "/auth/", "/my-revision/"] },
-      { userAgent: "OAI-SearchBot", allow: "/", disallow: ["/dashboard/", "/api/", "/auth/", "/my-revision/"] },
-      { userAgent: "GPTBot", allow: "/", disallow: ["/dashboard/", "/api/", "/auth/", "/my-revision/"] },
+      { userAgent: "Googlebot", allow: "/", disallow: ["/dashboard/", "/api/", "/auth/", "/my-revision/", "/editor/"] },
+      { userAgent: "Bingbot", allow: "/", disallow: ["/dashboard/", "/api/", "/auth/", "/my-revision/", "/editor/"] },
+      { userAgent: "OAI-SearchBot", allow: "/", disallow: ["/dashboard/", "/api/", "/auth/", "/my-revision/", "/editor/"] },
+      { userAgent: "GPTBot", allow: "/", disallow: ["/dashboard/", "/api/", "/auth/", "/my-revision/", "/editor/"] },
     ],
     sitemap: "https://gcserevise.co.uk/sitemap.xml",
   };

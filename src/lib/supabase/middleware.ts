@@ -37,7 +37,7 @@ export async function updateSession(request: NextRequest) {
   }
 
   // Redirect authenticated users away from auth pages
-  if (user && request.nextUrl.pathname.startsWith("/auth")) {
+  if (user && request.nextUrl.pathname.startsWith("/auth") && !request.nextUrl.pathname.startsWith("/auth/update-password")) {
     const url = request.nextUrl.clone();
     url.pathname = "/my-revision";
     return NextResponse.redirect(url);

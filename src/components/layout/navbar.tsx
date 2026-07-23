@@ -3,10 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, Search, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/brand/brand-logo";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { AccountActions } from "@/components/auth/account-actions";
 
 const publicLinks = [
   { href: "/subjects", label: "Subjects" },
@@ -47,12 +47,7 @@ export function Navbar() {
 
         <div className="hidden items-center gap-3 md:flex">
           <Link href="/search" aria-label="Search revision resources" className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 hover:text-indigo-600"><Search className="h-4 w-4" /></Link>
-          <Link href="/auth/login">
-            <Button variant="ghost" size="sm">Log in</Button>
-          </Link>
-          <Link href="/subjects">
-            <Button size="sm" className="rounded-lg bg-indigo-600">Start revising</Button>
-          </Link>
+          <AccountActions />
         </div>
 
         {/* Mobile menu toggle */}
@@ -80,12 +75,7 @@ export function Navbar() {
               </Link>
             ))}
             <hr className="my-2 border-slate-200" />
-            <Link href="/auth/login" onClick={() => setMobileOpen(false)}>
-              <Button variant="ghost" size="sm" className="w-full">Log in</Button>
-            </Link>
-            <Link href="/subjects" onClick={() => setMobileOpen(false)}>
-              <Button size="sm" className="w-full">Start revising</Button>
-            </Link>
+            <AccountActions mobile onNavigate={() => setMobileOpen(false)} />
           </nav>
         </div>
       )}

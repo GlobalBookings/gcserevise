@@ -4,10 +4,12 @@ import {
   Atom,
   Bot,
   BookOpenText,
+  BriefcaseBusiness,
   Brain,
   Check,
   ChevronRight,
   CircleCheck,
+  Code2,
   Clock3,
   Dna,
   FileText,
@@ -15,6 +17,7 @@ import {
   FlaskConical,
   History,
   LandPlot,
+  Landmark,
   Layers3,
   LibraryBig,
   Microscope,
@@ -101,6 +104,30 @@ const subjects = [
     topics: 7,
     tone: "subject-blue",
   },
+  {
+    name: "Religious Studies",
+    slug: "religious-studies",
+    icon: Landmark,
+    description: "Beliefs, practices, ethics and supported evaluation",
+    topics: 8,
+    tone: "subject-purple",
+  },
+  {
+    name: "Computer Science",
+    slug: "computer-science",
+    icon: Code2,
+    description: "Algorithms, programming, data, systems and cyber security",
+    topics: 8,
+    tone: "subject-teal",
+  },
+  {
+    name: "Business",
+    slug: "business",
+    icon: BriefcaseBusiness,
+    description: "Operations, marketing, people, finance and case studies",
+    topics: 8,
+    tone: "subject-blue",
+  },
 ];
 
 const studyTools = [
@@ -113,7 +140,7 @@ const studyTools = [
 
 const faqs = [
   { question: "Can I use GCSERevise for free?", answer: "Yes. Every published study pack, quiz, flashcard deck, guided tutor and progress dashboard is available without an account. Premium features such as cloud sync and expanded live AI support are planned for later." },
-  { question: "Which subjects do you cover?", answer: "GCSERevise currently covers nine high-demand AQA routes: Combined Science, Maths, Biology, Chemistry, Physics, Geography, History, English Language and English Literature. Each is broken into manageable specification-aligned topics." },
+  { question: "Which subjects do you cover?", answer: "GCSERevise currently covers twelve high-demand AQA routes, including Combined Science, Maths, the separate sciences, English, Geography, History, Religious Studies, Computer Science and Business." },
   { question: "Which exam boards are supported?", answer: "We are building coverage for the major UK exam boards, beginning with AQA and expanding the same topic-level experience across Edexcel and OCR." },
   { question: "How does the AI tutor help?", answer: "The AI tutor is designed for revision. It can explain a topic in simpler language, give a hint without revealing the answer, quiz you, or help you understand where an exam response lost marks." },
 ];
@@ -210,7 +237,7 @@ export default function HomePage() {
           <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
             <div>
               <p className="eyebrow">Pick a subject</p>
-              <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">Nine subject routes. One place to master them.</h2>
+              <h2 className="mt-3 text-3xl font-black tracking-tight text-slate-950 sm:text-4xl">Twelve subject routes. One place to master them.</h2>
               <p className="mt-3 max-w-2xl text-lg text-slate-600">Every topic follows the same simple path: learn it, test it, remember it.</p>
             </div>
             <Link href="/subjects" className="group flex items-center gap-1 text-sm font-bold text-indigo-600">Browse all topics <ChevronRight className="h-4 w-4 transition group-hover:translate-x-1" /></Link>
@@ -302,7 +329,7 @@ export default function HomePage() {
                 <Check className="h-7 w-7 text-emerald-600" />
               </div>
               <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                {["87 complete topic workspaces", "435 auto-marked questions", "634 recall flashcards", "Guided topic tutor", "Device-saved mastery tracking", "Official AQA paper links"].map((feature) => (
+                {["111 complete topic workspaces", "555 auto-marked questions", "778 recall flashcards", "222 worked practice answers", "Guided topic tutor", "Cloud-ready mastery tracking"].map((feature) => (
                   <div key={feature} className="flex items-center gap-2 text-sm font-semibold text-slate-700"><Check className="h-4 w-4 shrink-0 text-emerald-500" /> {feature}</div>
                 ))}
               </div>

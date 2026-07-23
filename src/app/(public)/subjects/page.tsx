@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { ArrowRight, Atom, BookOpenText, Dna, FlaskConical, History, LandPlot, LibraryBig, Microscope, Sigma } from "lucide-react";
+import { ArrowRight, Atom, BookOpenText, BriefcaseBusiness, Code2, Dna, FlaskConical, History, Landmark, LandPlot, LibraryBig, Microscope, Sigma } from "lucide-react";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { getPublishedSubjects } from "@/data/revision-library";
@@ -22,6 +22,9 @@ const presentation = {
   "english-language": { icon: BookOpenText, tone: "subject-purple", line: "Reading analysis, comparison and confident writing" },
   "english-literature": { icon: LibraryBig, tone: "subject-blue", line: "Texts, themes, quotations and essay thinking" },
   "combined-science": { icon: Microscope, tone: "subject-teal", line: "A single route through Trilogy Biology, Chemistry and Physics" },
+  "religious-studies": { icon: Landmark, tone: "subject-purple", line: "Beliefs, practices, ethics and supported evaluation" },
+  "computer-science": { icon: Code2, tone: "subject-teal", line: "Algorithms, programming, systems, data and cyber security" },
+  business: { icon: BriefcaseBusiness, tone: "subject-blue", line: "Case studies, operations, marketing, people and finance" },
 };
 
 export default function SubjectsPage() {

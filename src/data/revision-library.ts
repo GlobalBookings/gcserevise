@@ -2,15 +2,24 @@ import generatedContent from "./revision-content.generated.json";
 import { AQA_SUBJECTS } from "./aqa-seed";
 import { extendedRevisionContent, type RevisionFlashcard, type RevisionQuestion } from "./revision-extensions";
 import { englishRevisionContent } from "./english-revision-content";
+import { ADDITIONAL_SUBJECTS, additionalRevisionContent } from "./additional-subjects";
 
 export type { RevisionFlashcard, RevisionQuestion };
 
-export const PUBLISHED_SUBJECT_SLUGS = ["maths", "biology", "chemistry", "physics", "geography", "history", "english-language", "english-literature"] as const;
+export const PUBLISHED_SUBJECT_SLUGS = ["maths", "biology", "chemistry", "physics", "geography", "history", "english-language", "english-literature", "religious-studies", "computer-science", "business"] as const;
 
 export interface RevisionSection {
   heading: string;
   explanation: string;
   bullets: string[];
+}
+
+export interface ExamPracticeQuestion {
+  marks: number;
+  prompt: string;
+  approach: string[];
+  modelAnswer: string;
+  markPoints: string[];
 }
 
 export interface RevisionContent {
@@ -22,6 +31,7 @@ export interface RevisionContent {
   sections: RevisionSection[];
   commonMistakes: string[];
   retrievalPractice: string[];
+  examPractice: ExamPracticeQuestion[];
   reviewedAt: string;
 }
 
@@ -34,6 +44,9 @@ const subjectSummaries: Record<string, string> = {
   history: "Build precise causal chains, use accurate evidence and reach a supported judgement about significance and change.",
   "english-language": "Read the task precisely, select purposeful evidence and explain how choices shape meaning for the reader.",
   "english-literature": "Develop a clear interpretation, analyse concise evidence and connect moments across the whole text.",
+  "religious-studies": "Explain religious and non-religious reasoning accurately, then compare authority and reach a justified evaluation.",
+  "computer-science": "Trace processes precisely, use correct technical vocabulary and apply ideas to unfamiliar systems and code.",
+  business: "Apply every point to the case, build a connected consequence and judge against the business objective.",
 };
 
 const subjectExamTips: Record<string, string> = {
@@ -45,6 +58,9 @@ const subjectExamTips: Record<string, string> = {
   history: "Use specific evidence to prove each claim, then compare factors before reaching your judgement.",
   "english-language": "Answer the exact focus of the question and analyse specific choices rather than listing techniques.",
   "english-literature": "Begin with a conceptual argument, use short quotations and show how the idea develops across the text.",
+  "religious-studies": "Use a precise teaching, explain its meaning and show how it supports the view before evaluating it.",
+  "computer-science": "Trace values step by step and match every security, network or system feature to the named context.",
+  business: "Use case evidence in every developed paragraph and make the final judgement depend on the business's objectives.",
 };
 
 const generated = generatedContent as Record<string, { flashcards: RevisionFlashcard[]; questions: RevisionQuestion[] }>;
@@ -60,6 +76,9 @@ const commonMistakes: Record<string, string[]> = {
   history: ["Narrating events instead of answering the factor or claim.", "Using evidence without explaining how it proves the point.", "Reaching a judgement without comparing relative importance."],
   "english-language": ["Feature spotting without analysing meaning.", "Using long quotations that hide the key word.", "Making vague reader-effect claims that are not supported by the source."],
   "english-literature": ["Retelling the plot instead of developing an interpretation.", "Treating context as a separate paragraph.", "Using a quotation without analysing the writer's choices."],
+  "religious-studies": ["Stating that every believer holds the same view.", "Quoting a teaching without explaining its relevance.", "Giving two sides but no justified conclusion."],
+  "computer-science": ["Using a technical term without explaining its role.", "Tracing from memory instead of following the given code.", "Naming a security control without matching it to the threat."],
+  business: ["Giving a generic advantage with no case application.", "Jumping from a decision to profit without a causal chain.", "Ending with an unsupported or conditional-free judgement."],
 };
 
 function enrichContent(subjectSlug: string, content: { summary: string; examTip: string; flashcards: RevisionFlashcard[]; questions: RevisionQuestion[] }): RevisionContent {
@@ -82,12 +101,28 @@ function enrichContent(subjectSlug: string, content: { summary: string; examTip:
     })),
     commonMistakes: commonMistakes[subjectSlug] ?? ["Answering a related question rather than the command word.", "Using a fact without explaining why it matters.", "Failing to check the final answer against the question."],
     retrievalPractice: cards.slice(0, 4).map((card) => `Without looking, explain ${card.term.toLowerCase()} and give one example or consequence.`),
+    examPractice: [
+      {
+        marks: 2,
+        prompt: `Define ${cards[0].term.toLowerCase()} and state one detail that makes the definition precise.`,
+        approach: ["Identify the exact term being tested.", "Give the core meaning, then add one qualifying detail."],
+        modelAnswer: `${cards[0].term} means ${cards[0].definition.charAt(0).toLowerCase()}${cards[0].definition.slice(1)} This definition is precise because it identifies the feature that distinguishes the term in this topic.`,
+        markPoints: [`Accurate definition of ${cards[0].term}.`, "One relevant qualifying detail or correctly used piece of subject vocabulary."],
+      },
+      {
+        marks: 4,
+        prompt: `Explain how ${cards[0].term.toLowerCase()} and ${cards[1].term.toLowerCase()} are connected in this topic.`,
+        approach: ["Define each idea briefly.", "Use a because–therefore chain to make the connection explicit.", "Finish by linking the connection to the wider topic or exam context."],
+        modelAnswer: `${cards[0].definition} ${cards[1].definition} The ideas are connected because understanding the first helps explain when, why or how the second operates. Therefore a complete answer should use both ideas as one connected chain rather than as two isolated definitions.`,
+        markPoints: [`Accurate use of ${cards[0].term}.`, `Accurate use of ${cards[1].term}.`, "A clear causal or conceptual connection.", "A developed consequence or application."],
+      },
+    ],
     reviewedAt: REVIEWED_AT,
   };
 }
 
 export function getPublishedSubjects() {
-  return AQA_SUBJECTS.filter((subject) => PUBLISHED_SUBJECT_SLUGS.includes(subject.slug as typeof PUBLISHED_SUBJECT_SLUGS[number]));
+  return [...AQA_SUBJECTS, ...ADDITIONAL_SUBJECTS].filter((subject) => PUBLISHED_SUBJECT_SLUGS.includes(subject.slug as typeof PUBLISHED_SUBJECT_SLUGS[number]));
 }
 
 export function getSubject(subjectSlug: string) {
@@ -103,6 +138,8 @@ export function getTopic(subjectSlug: string, topicSlug: string) {
 export function getRevisionContent(subjectSlug: string, topicSlug: string): RevisionContent | null {
   const englishContent = english[topicSlug];
   if (englishContent) return enrichContent(subjectSlug, englishContent);
+  const additionalContent = additionalRevisionContent[`${subjectSlug}:${topicSlug}`] as { summary: string; examTip: string; flashcards: RevisionFlashcard[]; questions: RevisionQuestion[] } | undefined;
+  if (additionalContent) return enrichContent(subjectSlug, additionalContent);
   const extension = extendedRevisionContent[topicSlug];
   if (extension) return enrichContent(subjectSlug, extension);
 
@@ -138,6 +175,9 @@ export const OFFICIAL_SPEC_URLS: Record<string, string> = {
   history: "https://www.aqa.org.uk/subjects/history/gcse/history-8145/specification/subject-content",
   "english-language": "https://www.aqa.org.uk/subjects/english/gcse/english-8700/specification/subject-content",
   "english-literature": "https://www.aqa.org.uk/subjects/english/gcse/english-8702/specification/subject-content",
+  "religious-studies": "https://www.aqa.org.uk/subjects/religious-studies/gcse/religious-studies-8062/specification/subject-content",
+  "computer-science": "https://www.aqa.org.uk/subjects/computer-science/gcse/computer-science-8525/specification/subject-content",
+  business: "https://www.aqa.org.uk/subjects/business/gcse/business-8132/specification/subject-content",
 };
 
 export interface SearchItem {

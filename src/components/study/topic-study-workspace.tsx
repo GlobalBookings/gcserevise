@@ -23,11 +23,12 @@ import {
   Trophy,
   X,
 } from "lucide-react";
-import type { RevisionFlashcard, RevisionQuestion, RevisionSection } from "@/data/revision-library";
+import type { ExamPracticeQuestion, RevisionFlashcard, RevisionQuestion, RevisionSection } from "@/data/revision-library";
 import { useLocalProgress, writeTopicProgress } from "@/hooks/use-local-progress";
 import { addMistake } from "@/lib/local-learning";
+import { trackProductEvent } from "@/lib/product-analytics";
 
-type StudyTab = "learn" | "quiz" | "flashcards" | "tutor";
+type StudyTab = "learn" | "quiz" | "flashcards" | "practice" | "tutor";
 
 interface StoredProgress {
   notesRead: boolean;
@@ -53,6 +54,7 @@ interface TopicStudyWorkspaceProps {
   sections: RevisionSection[];
   commonMistakes: string[];
   retrievalPractice: string[];
+  examPractice: ExamPracticeQuestion[];
   reviewedAt: string;
   officialSpecUrl: string;
   previousTopic: { name: string; slug: string } | null;
@@ -84,6 +86,7 @@ export function TopicStudyWorkspace(props: TopicStudyWorkspaceProps) {
     sections,
     commonMistakes,
     retrievalPractice,
+    examPractice,
     reviewedAt,
     officialSpecUrl,
     previousTopic,
@@ -107,6 +110,7 @@ export function TopicStudyWorkspace(props: TopicStudyWorkspaceProps) {
     { id: "learn", label: "Learn", icon: FileText, detail: "Revision notes" },
     { id: "quiz", label: "Quiz", icon: Brain, detail: `${questions.length} questions` },
     { id: "flashcards", label: "Flashcards", icon: Target, detail: `${flashcards.length} cards` },
+    { id: "practice", label: "Practice", icon: Trophy, detail: "Worked answers" },
     { id: "tutor", label: "Tutor", icon: Bot, detail: "Ask for help" },
   ];
 
@@ -148,7 +152,7 @@ export function TopicStudyWorkspace(props: TopicStudyWorkspaceProps) {
       </div>
 
       <div className="sticky top-16 z-30 border-b border-slate-200 bg-white/95 backdrop-blur-lg">
-        <div className="mx-auto grid max-w-7xl grid-cols-4 px-2 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl grid-cols-5 px-2 sm:px-6 lg:px-8">
           {tabs.map((item) => (
             <button
               key={item.id}
@@ -177,7 +181,7 @@ export function TopicStudyWorkspace(props: TopicStudyWorkspaceProps) {
             retrievalPractice={retrievalPractice}
             reviewedAt={reviewedAt}
             completed={progress.notesRead}
-            onComplete={() => saveProgress({ notesRead: true })}
+            onComplete={() => { saveProgress({ notesRead: true }); trackProductEvent("topic_complete", `${subjectSlug}/${topicSlug}`); }}
             onQuiz={() => setTab("quiz")}
           />
         )}
@@ -202,6 +206,7 @@ export function TopicStudyWorkspace(props: TopicStudyWorkspaceProps) {
             onTutor={() => setTab("tutor")}
           />
         )}
+        {tab === "practice" && <PracticePanel topicName={topicName} questions={examPractice} />}
         {tab === "tutor" && (
           <TutorPanel subjectName={subjectName} subjectSlug={subjectSlug} topicName={topicName} topicSlug={topicSlug} />
         )}
@@ -228,6 +233,11 @@ export function TopicStudyWorkspace(props: TopicStudyWorkspaceProps) {
       </main>
     </div>
   );
+}
+
+function PracticePanel({ topicName, questions }: { topicName: string; questions: ExamPracticeQuestion[] }) {
+  const [revealed, setRevealed] = useState<Set<number>>(new Set());
+  return <div className="space-y-6"><div><p className="text-xs font-black uppercase tracking-[.16em] text-indigo-600">Exam practice</p><h2 className="mt-2 text-3xl font-black">Plan it, answer it, mark it.</h2><p className="mt-3 text-slate-600">Attempt each {topicName} question before opening the approach and model answer.</p></div>{questions.map((question, index) => { const open = revealed.has(index); return <article key={question.prompt} className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"><div className="p-6 sm:p-8"><div className="flex items-start justify-between gap-4"><p className="text-xs font-black uppercase tracking-wider text-indigo-600">Practice question {index + 1}</p><span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-black text-slate-600">[{question.marks} marks]</span></div><h3 className="mt-4 text-xl font-black leading-8">{question.prompt}</h3><div className="mt-5 rounded-xl border border-dashed border-slate-300 bg-slate-50 p-5 text-sm text-slate-500">Write or say your answer now. Aim for roughly one distinct relevant point per available mark.</div><button onClick={() => setRevealed((current) => { const next = new Set(current); if (next.has(index)) next.delete(index); else next.add(index); return next; })} className="mt-5 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-bold text-white">{open ? "Hide worked answer" : "Show approach and worked answer"}</button></div>{open && <div className="border-t border-slate-200 bg-indigo-50 p-6 sm:p-8"><div className="grid gap-6 lg:grid-cols-2"><div><h4 className="font-black text-indigo-950">A strong approach</h4><ol className="mt-3 space-y-2 text-sm leading-6 text-indigo-900">{question.approach.map((step, stepIndex) => <li key={step}><strong>{stepIndex + 1}.</strong> {step}</li>)}</ol><h4 className="mt-6 font-black text-indigo-950">Mark points</h4><ul className="mt-3 space-y-2 text-sm leading-6 text-indigo-900">{question.markPoints.map((point) => <li key={point} className="flex gap-2"><Check className="mt-1 h-4 w-4 shrink-0 text-emerald-600" />{point}</li>)}</ul></div><div className="rounded-xl bg-white p-5"><h4 className="font-black">Model answer</h4><p className="mt-3 text-sm leading-7 text-slate-700">{question.modelAnswer}</p><p className="mt-4 text-xs text-slate-400">Use this to check coverage and reasoning. Your wording does not need to match exactly.</p></div></div></div>}</article>; })}</div>;
 }
 
 function LearnPanel({ topicName, summary, examTip, flashcards, objectives, sections, commonMistakes, retrievalPractice, reviewedAt, completed, onComplete, onQuiz }: {
@@ -369,6 +379,7 @@ function QuizPanel({ topicName, topicSlug, subjectName, subjectSlug, questions, 
       const percentage = Math.round((score / questions.length) * 100);
       setFinished(true);
       onFinish(percentage);
+      trackProductEvent("quiz_complete", `${subjectSlug}/${topicSlug}`);
       return;
     }
     setIndex((value) => value + 1);
@@ -523,6 +534,7 @@ function TutorPanel({ subjectName, subjectSlug, topicName, topicSlug }: { subjec
     const clean = text.trim();
     if (!clean || loading) return;
     setMessages((current) => [...current, { role: "student", text: clean }]);
+    trackProductEvent("tutor_used", `${subjectSlug}/${topicSlug}`);
     setQuestion(""); setLoading(true);
     try {
       const response = await fetch("/api/tutor", {

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { CalendarDays, Check, Clock3, GraduationCap } from "lucide-react";
 import { useLearnerProfile } from "@/hooks/use-local-learning";
 import { saveLearnerProfile } from "@/lib/local-learning";
+import { trackProductEvent } from "@/lib/product-analytics";
 
 interface SetupSubject { name: string; slug: string }
 
@@ -21,7 +22,7 @@ export function LearnerSetup({ subjects }: { subjects: SetupSubject[] }) {
   }
 
   return (
-    <form onSubmit={(event) => { event.preventDefault(); saveLearnerProfile({ selectedSubjects, targetGrade, dailyMinutes, examDate, completedSetup: true }); router.push("/my-revision"); }} className="space-y-6">
+    <form onSubmit={(event) => { event.preventDefault(); saveLearnerProfile({ selectedSubjects, targetGrade, dailyMinutes, examDate, completedSetup: true }); trackProductEvent("plan_created", `${selectedSubjects.length}_subjects`); router.push("/my-revision"); }} className="space-y-6">
       <section className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
         <div className="flex items-center gap-3"><div className="flex h-11 w-11 items-center justify-center rounded-xl bg-indigo-100 text-indigo-600"><GraduationCap className="h-5 w-5" /></div><div><h2 className="text-xl font-black">Your subjects</h2><p className="text-sm text-slate-500">Choose everything in your current GCSE programme.</p></div></div>
         <div className="mt-6 grid gap-3 sm:grid-cols-2">

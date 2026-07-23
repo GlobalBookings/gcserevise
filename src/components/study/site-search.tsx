@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ArrowRight, BookOpen, Search, Tags } from "lucide-react";
 import type { SearchItem } from "@/data/revision-library";
+import { trackProductEvent } from "@/lib/product-analytics";
 
 export function SiteSearch({ items, initialQuery = "" }: { items: SearchItem[]; initialQuery?: string }) {
   const [query, setQuery] = useState(initialQuery);
@@ -31,7 +32,7 @@ export function SiteSearch({ items, initialQuery = "" }: { items: SearchItem[]; 
       </div>
       <div className="mt-4 grid gap-3">
         {results.map((item, index) => (
-          <Link key={`${item.href}:${item.title}:${index}`} href={item.href} className="group flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-lg">
+          <Link key={`${item.href}:${item.title}:${index}`} href={item.href} onClick={() => trackProductEvent("search_used", item.type.toLowerCase())} className="group flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-lg">
             <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${item.type === "Topic" ? "bg-indigo-100 text-indigo-600" : "bg-emerald-100 text-emerald-600"}`}>
               {item.type === "Topic" ? <BookOpen className="h-5 w-5" /> : <Tags className="h-5 w-5" />}
             </div>

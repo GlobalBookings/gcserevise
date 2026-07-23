@@ -20,6 +20,13 @@ for (const subject of subjects) {
     if (content.sections.length < 2) errors.push(`${subject.slug}/${topic.slug}: needs at least 2 note sections`);
     if (content.commonMistakes.length < 3) errors.push(`${subject.slug}/${topic.slug}: needs at least 3 common mistakes`);
     if (content.retrievalPractice.length < 4) errors.push(`${subject.slug}/${topic.slug}: needs at least 4 retrieval prompts`);
+    if (content.examPractice.length < 2) errors.push(`${subject.slug}/${topic.slug}: needs at least 2 exam-practice questions`);
+    content.examPractice.forEach((practice, index) => {
+      if (practice.marks < 1) errors.push(`${subject.slug}/${topic.slug} practice ${index + 1}: invalid mark value`);
+      if (practice.approach.length < 2) errors.push(`${subject.slug}/${topic.slug} practice ${index + 1}: needs a worked approach`);
+      if (practice.markPoints.length < practice.marks) errors.push(`${subject.slug}/${topic.slug} practice ${index + 1}: fewer mark points than marks`);
+      if (practice.modelAnswer.length < 80) errors.push(`${subject.slug}/${topic.slug} practice ${index + 1}: model answer is too short`);
+    });
     if (content.flashcards.length < 6) errors.push(`${subject.slug}/${topic.slug}: needs at least 6 flashcards`);
     if (content.questions.length < 5) errors.push(`${subject.slug}/${topic.slug}: needs at least 5 questions`);
     flashcardCount += content.flashcards.length;
@@ -32,7 +39,7 @@ for (const subject of subjects) {
   }
 }
 
-if (subjects.length !== 8) errors.push(`expected 8 published subjects, found ${subjects.length}`);
+if (subjects.length !== 11) errors.push(`expected 11 published subjects, found ${subjects.length}`);
 if (errors.length) {
   console.error(errors.join("\n"));
   process.exit(1);

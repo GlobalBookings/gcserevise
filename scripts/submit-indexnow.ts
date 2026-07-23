@@ -3,7 +3,7 @@ import { getPublishedSubjects } from "../src/data/revision-library";
 const host = "gcserevise.co.uk";
 const key = "gcserevise2026indexnow9f4c2b8d1a7e6";
 const keyLocation = `https://${host}/${key}.txt`;
-const paths = ["/", "/subjects", "/past-papers", "/search", "/diagnostic", "/exam-resources", "/premium", "/editorial-standards", "/subjects/aqa/combined-science"];
+const paths = ["/", "/subjects", "/past-papers", "/search", "/diagnostic", "/exam-resources", "/premium", "/editorial-standards", "/subjects/aqa", "/subjects/edexcel", "/subjects/ocr", "/subjects/aqa/combined-science"];
 
 for (const subject of getPublishedSubjects()) {
   paths.push(`/subjects/aqa/${subject.slug}`);

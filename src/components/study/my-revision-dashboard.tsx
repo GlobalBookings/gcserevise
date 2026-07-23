@@ -7,6 +7,7 @@ import { calculateTopicProgress, isTopicMastered } from "@/lib/local-progress";
 import { useLocalProgress } from "@/hooks/use-local-progress";
 import { useLearnerProfile, useMistakes } from "@/hooks/use-local-learning";
 import { daysUntil } from "@/lib/local-learning";
+import { CloudSyncStatus } from "@/components/platform/cloud-progress-sync";
 
 interface DashboardSubject {
   name: string;
@@ -47,7 +48,7 @@ export function MyRevisionDashboard({ subjects }: { subjects: DashboardSubject[]
       <section className="border-b border-slate-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-            <div><p className="text-xs font-black uppercase tracking-[.16em] text-indigo-600">My revision</p><h1 className="mt-2 text-4xl font-black tracking-tight">Keep the momentum going.</h1><p className="mt-3 text-slate-600">{profile.completedSetup ? `Target grade ${profile.targetGrade} · ${profile.dailyMinutes} minutes a day${examCountdown !== null ? ` · ${examCountdown} days to your first exam` : ""}` : "Set your subjects and available time to get a focused daily plan."}</p></div>
+            <div><div className="flex items-center gap-3"><p className="text-xs font-black uppercase tracking-[.16em] text-indigo-600">My revision</p><CloudSyncStatus /></div><h1 className="mt-2 text-4xl font-black tracking-tight">Keep the momentum going.</h1><p className="mt-3 text-slate-600">{profile.completedSetup ? `Target grade ${profile.targetGrade} · ${profile.dailyMinutes} minutes a day${examCountdown !== null ? ` · ${examCountdown} days to your first exam` : ""}` : "Set your subjects and available time to get a focused daily plan."}</p></div>
             <div className="flex flex-wrap gap-3"><Link href="/my-revision/setup" className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-bold"><Settings2 className="h-4 w-4" /> {profile.completedSetup ? "Edit plan" : "Set up my plan"}</Link><Link href="/subjects" className="inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-200">Revise a new topic <ArrowRight className="h-4 w-4" /></Link></div>
           </div>
         </div>

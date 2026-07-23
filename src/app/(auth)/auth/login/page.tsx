@@ -67,6 +67,7 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
+                <div className="mt-2 text-right"><Link href="/auth/forgot-password" className="text-xs font-bold text-indigo-600 hover:underline">Forgot password?</Link></div>
               </div>
 
               <div>
